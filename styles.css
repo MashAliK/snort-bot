@@ -1,0 +1,12 @@
+#logo{
+    font-family: "Bebas Neue";
+    font-size: 2.7em;
+}
+.nav-item{
+    font-family: Helvetica, sans-serif;
+    font-size: 1.2em;
+    opacity:80%;
+}
+.nav-item:hover{
+    opacity:100%;
+}
