@@ -1,8 +1,39 @@
-#logo{
+.logo{
     font-family: "Bebas Neue";
-    font-size: 2.7em;
+    font-size: 2em;
+    transition: 0.3s;
+    opacity: 75%;
+}
+.logo:hover{
+    opacity: 100%;
 }
 .nav-item{
     font-family: Helvetica, sans-serif;
-    font-size: 1.2em;
+    font-size: 1em;
+    opacity: 60%;
+}
+.nav-link {
+    color: black;
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+    transition: 0.4s;
+}
+.dropdown-item:hover{
+    cursor: pointer;
+    color: blue;
+}
+.dropdown-menu{  
+    display:block; 
+    opacity: 0;
+    visibility: hidden; 
+    transition:.2s; 
+    margin-top:0;  
+}
+.nav-item:hover .dropdown-menu{ 
+    transition: .2s; 
+    opacity:1;
+    visibility:visible; 
+}
+.dropdown-item{
+    transition:0.4s;
 }

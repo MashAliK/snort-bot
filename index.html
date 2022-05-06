@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, inital-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -12,14 +12,23 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body style="background-color:rgba(168, 168, 168, 0.174);">
-        <nav class="navbar navbar-expand-sm bg-light shadow">
+        <nav class="navbar navbar-expand-sm bg-light shadow-sm">
             <div class="ps-5">
-                <a class="navbar-brand" href="#" id="logo">Snort Bot</a>
+                <a class="navbar-brand logo" href="#">Snort Bot</a>
             </div>
-            <ul class="navbar-nav">
-                <li class="nav-item px-3"><a class="nav-link" href="#"><small>ABOUT</small></a></li>
-                <li class="nav-item px-3"><a class="nav-link" href="https://github.com/MashAliK/snortBot"
-                    target="_blank"><small>SOURCE</small></a></li>
+            <ul class="navbar-nav px-3">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Play</a>
+                    <ul class="dropdown-menu fade-up">
+                        <li><a class="dropdown-item">Against Human</a></li>
+                        <li><a class="dropdown-item">Against Computer</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Guide</a></li>
+            </ul>
+            <ul class="navbar-nav ms-auto mx-5">
+                <li class="nav-item"><a class="nav-link" href="https://github.com/MashAliK/snortBot"
+                    target="_blank"><img class="logo" src="icons/GitHub-Mark-32px.png" alt="github"></a></li>
             </div>
         </div>
     </body>
