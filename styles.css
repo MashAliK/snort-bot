@@ -10,7 +10,7 @@
 .nav-item{
     font-family: Helvetica, sans-serif;
     font-size: 1em;
-    opacity: 60%;
+    opacity: 100%;
 }
 .nav-link {
     color: black;
@@ -27,7 +27,7 @@
     opacity: 0;
     visibility: hidden; 
     transition:.2s; 
-    margin-top:0;  
+    margin-top:8px;  
 }
 .nav-item:hover .dropdown-menu{ 
     transition: .2s; 
@@ -36,4 +36,18 @@
 }
 .dropdown-item{
     transition:0.4s;
+}
+#game-container{
+    padding-top: 10px;
+    height: 500px;
+    display: flex;
+}
+#game{
+    width: 1100px;
+    height: 1100px;
+    margin: 0 auto;
+    display: block;
+    justify-content: center;
+    transform:scale(0.5);
+    transform-origin: top;
 }
