@@ -48,6 +48,5 @@
     margin: 0 auto;
     display: block;
     justify-content: center;
-    /*transform:scale(0.50);*/
     transform-origin: top;
 }

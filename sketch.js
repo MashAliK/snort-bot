@@ -1,6 +1,8 @@
-let row = 10, col = 10, length = 100, borderSize = 2, fadeSpeed = 20;
-player1 = {color: [255,0,0]};
-player2 = {color: [0,0,255]};
+let row = window.parent.numRow, col = window.parent.numCol;
+console.log(col);
+let length = 100, borderSize = 2, fadeSpeed = 20;
+player1 = {color: [255,0,0], bot: false};
+player2 = {color: [0,0,255], bot: false};
 turn = true; //true if it is player1's turn
 let graph = new Array(row); //2d array represents graph of the game
 for(let i = 0; i < row; i++){
@@ -30,8 +32,8 @@ function draw(){
     }
 }
 
-function mouseMoved(){
-    loop();
+function mouseMoved(){ //start/stop drawing based on mouse position
+    (getHover() == undefined) ? noLoop() : loop();
 }
 
 function mouseClicked(){
