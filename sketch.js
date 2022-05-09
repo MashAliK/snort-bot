@@ -1,6 +1,6 @@
-let row = window.parent.numRow, col = window.parent.numCol;
-console.log(col);
-let length = 100, borderSize = 2, fadeSpeed = 20;
+let row = window.parent.numRow, col = window.parent.numCol,
+    length = window.parent.tileLength;
+let borderSize = 2, fadeInSpeed = 20, fadeOutSpeed = 15     ;
 player1 = {color: [255,0,0], bot: false};
 player2 = {color: [0,0,255], bot: false};
 turn = true; //true if it is player1's turn
@@ -33,11 +33,16 @@ function draw(){
 }
 
 function mouseMoved(){ //start/stop drawing based on mouse position
-    (getHover() == undefined) ? noLoop() : loop();
+    let curPos = getHover();
+    if(curPos == undefined || graph[curPos.curRow][curPos.curCol].filled == true){
+        noLoop();
+    }
+    else
+        loop();
 }
 
 function mouseClicked(){
-    loop();
+    //loop();
     let curPos = getHover();
     if(curPos == undefined) return;
     let cur = graph[curPos.curRow][curPos.curCol];
@@ -62,18 +67,18 @@ function getHover(){ //returns square that is hovered by the mouse
 function hover(i,j,[r,g,b]){
     let cur = graph[i][j];
     if(cur.filled == true) return;
-    cur.color[0] = (cur.color[0] > r) ? (cur.color[0]-fadeSpeed) : r;
-    cur.color[1] = (cur.color[1] > g) ? (cur.color[1]-fadeSpeed) : g;
-    cur.color[2] = (cur.color[2] > b) ? (cur.color[2]-fadeSpeed) : b;
+    cur.color[0] = (cur.color[0] > r) ? (cur.color[0]-fadeInSpeed) : r;
+    cur.color[1] = (cur.color[1] > g) ? (cur.color[1]-fadeInSpeed) : g;
+    cur.color[2] = (cur.color[2] > b) ? (cur.color[2]-fadeInSpeed) : b;
     if(cur.color[0] == r && cur.color[1] == g && cur.color[2] == b)
         noLoop();
 }
 
 function unhover(i,j){
     let cur = graph[i][j];
-    cur.color[0] = (cur.color[0] < 255) ? (cur.color[0]+fadeSpeed) : 255;
-    cur.color[1] = (cur.color[1] < 255) ? (cur.color[1]+fadeSpeed) : 255;
-    cur.color[2] = (cur.color[2] < 255) ? (cur.color[2]+fadeSpeed) : 255;
+    cur.color[0] = (cur.color[0] < 255) ? (cur.color[0]+fadeOutSpeed) : 255;
+    cur.color[1] = (cur.color[1] < 255) ? (cur.color[1]+fadeOutSpeed) : 255;
+    cur.color[2] = (cur.color[2] < 255) ? (cur.color[2]+fadeOutSpeed) : 255;
 }
 
 function createGraph(){
