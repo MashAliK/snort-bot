@@ -1,4 +1,4 @@
-let row = 10, col = 10, length = 100, borderSize = 1, fadeSpeed = 20;
+let row = 10, col = 10, length = 100, borderSize = 2, fadeSpeed = 20;
 player1 = {color: [255,0,0]};
 player2 = {color: [0,0,255]};
 turn = true; //true if it is player1's turn
