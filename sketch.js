@@ -1,6 +1,6 @@
 let row = window.parent.numRow, col = window.parent.numCol,
     length = window.parent.tileLength;
-let borderSize = 2, fadeInSpeed = 20, fadeOutSpeed = 15     ;
+let borderSize = 2, fadeInSpeed = 20, fadeOutSpeed = 20     ;
 player1 = {color: [255,0,0], bot: false};
 player2 = {color: [0,0,255], bot: false};
 turn = true; //true if it is player1's turn
@@ -14,6 +14,7 @@ function setup(){
 }
 
 function draw(){
+    console.log("here");
     stroke(0);
     let color = turn ? player1.color : player2.color;
     strokeWeight(borderSize);
@@ -24,7 +25,7 @@ function draw(){
             hovered = (curPos!= undefined && curPos.curRow == i && curPos.curCol == j) ? true : false;
             if(!hovered && cur.filled==false)
                 unhover(i,j)
-            fill(+cur.color[0],cur.color[1],cur.color[2]);
+            fill(cur.color[0],cur.color[1],cur.color[2]);
             rect(cur.x,cur.y,length);
         }
     if(curPos!=undefined){
@@ -34,15 +35,14 @@ function draw(){
 
 function mouseMoved(){ //start/stop drawing based on mouse position
     let curPos = getHover();
-    if(curPos == undefined || graph[curPos.curRow][curPos.curCol].filled == true){
-        noLoop();
-    }
-    else
+    if(curPos != undefined && !graph[curPos.curRow][curPos.curCol].filled)
         loop();
+    else{
+        clearHighlight();
+    }
 }
 
 function mouseClicked(){
-    //loop();
     let curPos = getHover();
     if(curPos == undefined) return;
     let cur = graph[curPos.curRow][curPos.curCol];
@@ -71,7 +71,7 @@ function hover(i,j,[r,g,b]){
     cur.color[1] = (cur.color[1] > g) ? (cur.color[1]-fadeInSpeed) : g;
     cur.color[2] = (cur.color[2] > b) ? (cur.color[2]-fadeInSpeed) : b;
     if(cur.color[0] == r && cur.color[1] == g && cur.color[2] == b)
-        noLoop();
+        clearHighlight();
 }
 
 function unhover(i,j){
@@ -79,6 +79,22 @@ function unhover(i,j){
     cur.color[0] = (cur.color[0] < 255) ? (cur.color[0]+fadeOutSpeed) : 255;
     cur.color[1] = (cur.color[1] < 255) ? (cur.color[1]+fadeOutSpeed) : 255;
     cur.color[2] = (cur.color[2] < 255) ? (cur.color[2]+fadeOutSpeed) : 255;
+}
+
+function clearHighlight(){ //completes fadeout animation before program stops drawing
+    let curHovered = getHover();
+    for(let i = 0; i < row; i++){
+        for(let j = 0; j < col; j++){
+            //skip current tile being hovered
+            if(curHovered != undefined && curHovered.curRow == i && curHovered.curCol == j)
+                continue;
+            let cur = graph[i][j];
+            while(!cur.filled && (cur.color[0]!=255 || cur.color[1]!=255 || cur.color[2]!=255)){
+                unhover(i,j);
+            }
+        }
+    }
+    noLoop();
 }
 
 function createGraph(){
