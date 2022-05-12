@@ -82,25 +82,18 @@ function clearHighlight(){ //completes fadeout animation before program stops dr
 function nodeClaimed(x,y){
     for(let i of getConnected(x,y)){
         if(i.filled) continue;
-        if((i.available == "p1" && turn) || (i.available == "p2" && !turn))
+        if((i.available=="p1" && turn) || (i.available=="p2" && !turn))
             i.available = "none";
-        else
+        else if(i.available != "none")
             i.available = turn ? "p2" : "p1";
     }
 }
 
-function getConnected(curRow, curCol){ //get all nodes connected to the current node by an edge
+function getConnected(x, y){ //get all nodes connected to the current node by an edge
     connectedNodes = [];
-    for(let i = 0; i < row; i++){
-        for(let j = 0; j < col; j++){
-            if(i == curRow && j == curCol) //skip current node
-                continue;
-            for(let h = 0; h < graph[i][j].connected.edgeCol.length; h++)
-                if(curRow == graph[i][j].connected.edgeRow[h]
-                && curCol == graph[i][j].connected.edgeCol[h])
-                    connectedNodes.push(graph[i][j]);
-        }
-    }
+    for(let h = 0; h < graph[x][y].connected.edgeCol.length; h++)
+            connectedNodes.push(graph[graph[x][y].connected.edgeRow[h]]
+                [graph[x][y].connected.edgeCol[h]]);
     return connectedNodes;
 }
 
@@ -125,11 +118,11 @@ function createGraph(){
                 filled: false, available: "all", connected: {edgeRow:[],edgeCol:[]}};
             if(i != 0)
                 addEdge(graph[i][j],i-1,j);
-            if(i != col-1)
+            if(i != row-1)
                 addEdge(graph[i][j],i+1,j);
             if(j != 0)
                 addEdge(graph[i][j],i,j-1);
-            if(j != row-1)
+            if(j != col-1)
                 addEdge(graph[i][j],i,j+1);
             xpos += length;
         }
