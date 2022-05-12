@@ -1,6 +1,4 @@
 let borderSize = 2; 
-let radiusFactor = 0.5; //size of circle described with a number between 0 and 1
-let tile = false;
 
 function setup(){
     createCanvas(length*col,length*row);
@@ -9,7 +7,7 @@ function setup(){
 
 function draw(){
     stroke(0);
-    let color = getColor(); 
+    let color = turn ? player1.color : player2.color; 
     strokeWeight(borderSize);
     let curPos = getHover();
     for(let i = 0; i < row; i++)
@@ -18,25 +16,35 @@ function draw(){
             hovered = (curPos!= undefined && curPos.curRow == i && curPos.curCol == j) ? true : false;
             if(!hovered && cur.filled==false)
                 unhover(i,j);
-            fill(cur.color[0],cur.color[1],cur.color[2]);
-            if(tile){
-                rect(cur.x,cur.y,length);
-            }else {
-                let circleDiameter = length*radiusFactor, lineLength = 0.5*length*(1-radiusFactor);
-                circle(cur.x+length/2,cur.y+length/2,circleDiameter);
-                console.log(lineLength);
-                //connect lines between nodes
-                if(j != 0)
-                    line(cur.x, cur.y+length/2,cur.x+lineLength,cur.y+length/2);
-                if(j != col-1)
-                    line(cur.x+circleDiameter+lineLength, cur.y+length/2,cur.x+length,cur.y+length/2);
-                if(i != 0)
-                    line(cur.x+length/2, cur.y,cur.x+length/2,cur.y+lineLength); 
-                if(i != row-1)
-                    line(cur.x+length/2, cur.y+circleDiameter+lineLength,cur.x+length/2,cur.y+length);                  
-            }
+            if(cur.filled || cur.available == "all"){
+                drawNode(cur.x,cur.y,0.25,i,j,cur.color);
+            }else if(cur.available == "p1")
+                drawNode(cur.x,cur.y,0.5,i,j,255);
+            else if(cur.available == "p2")
+                drawNode(cur.x,cur.y,0.5,i,j,0); 
+            else{
+                drawNode(cur.x,cur.y,1,i,j,0); 
+            } 
+                              
         }
     if(curPos!=undefined){
         hover(curPos.curRow,curPos.curCol,color);
     }
+}
+
+//draws circle representing node and edges connected it
+//circle size describles the size of a circle with a number between 0 and 1
+function drawNode(x,y,circleSize, curX, curY, color){
+    fill(color);
+    let d = length*circleSize;
+    let lineLength =  0.5*length*(1-circleSize);
+    circle(x+length/2,y+length/2,d);
+    if(curY != 0)
+        line(x, y+length/2,x+lineLength,y+length/2);
+    if(curY != col-1)
+        line(x+d+lineLength, y+length/2,x+length,y+length/2);
+    if(curX != 0)
+        line(x+length/2, y,x+length/2,y+lineLength); 
+    if(curX != row-1)
+        line(x+length/2, y+d+lineLength,x+length/2,y+length);
 }
