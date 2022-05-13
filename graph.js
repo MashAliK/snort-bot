@@ -1,5 +1,5 @@
 let row = window.parent.numRow, col = window.parent.numCol,
-    length = window.parent.tileLength, fadeInSpeed = 20, fadeOutSpeed = 20;
+    length = window.parent.tileLength, fadeSpeed = 20;
 player1 = {color: [0,0,255], bot: false};
 player2 = {color: [255,0,0], bot: false};
 turn = true; //true if it is player1's turn
@@ -22,7 +22,7 @@ function mouseClicked(){
     if(curPos == undefined) return;
     let cur = graph[curPos.curRow][curPos.curCol];
     if(cur.filled) return; 
-    if(cur.available == "all"){
+    if((cur.available == "all") || (cur.available == "p1" && turn) || (cur.available == "p2" && !turn)){
         cur.available = turn ? "p1" : "p2";
         cur.filled = true;
         let color = turn ? player1.color : player2.color;
@@ -31,12 +31,9 @@ function mouseClicked(){
         cur.color[2] = color[2];
         nodeClaimed(curPos.curRow,curPos.curCol);
         turn = !turn;
-    }else if((cur.available == "p1" && turn) || (cur.available == "p2" && !turn)){
-        cur.fulled = true;
-        nodeClaimed(curPos.curRow,curPos.curCol);
-        turn = !turn;
     }
-    
+    clear();
+    redraw();
 }
 
 function getHover(){ //returns square that is hovered by the mouse
@@ -49,25 +46,25 @@ function getHover(){ //returns square that is hovered by the mouse
 function hover(i,j,[r,g,b]){
     let cur = graph[i][j];
     if(cur.filled == true) return;
-    cur.color[0] = (cur.color[0] < r) ? (cur.color[0]+fadeInSpeed) : r;
-    cur.color[1] = (cur.color[1] < g) ? (cur.color[1]+fadeInSpeed) : g;
-    cur.color[2] = (cur.color[2] < b) ? (cur.color[2]+fadeInSpeed) : b;
+    cur.color[0] = (cur.color[0] < r) ? (cur.color[0]+fadeSpeed) : r;
+    cur.color[1] = (cur.color[1] < g) ? (cur.color[1]+fadeSpeed) : g;
+    cur.color[2] = (cur.color[2] < b) ? (cur.color[2]+fadeSpeed) : b;
     if(cur.color[0] == r && cur.color[1] == g && cur.color[2] == b)
         clearHighlight();
 }
 
 function unhover(i,j){
     let cur = graph[i][j];
-    cur.color[0] = (cur.color[0] > 0) ? (cur.color[0]-fadeOutSpeed) : 0;
-    cur.color[1] = (cur.color[1] > 0) ? (cur.color[1]-fadeOutSpeed) : 0;
-    cur.color[2] = (cur.color[2] > 0) ? (cur.color[2]-fadeOutSpeed) : 0;
+    cur.color[0] = (cur.color[0] > 0) ? (cur.color[0]-fadeSpeed) : 0;
+    cur.color[1] = (cur.color[1] > 0) ? (cur.color[1]-fadeSpeed) : 0;
+    cur.color[2] = (cur.color[2] > 0) ? (cur.color[2]-fadeSpeed) : 0;
 }
 
 function clearHighlight(){ //completes fadeout animation before program stops drawing
     let curHovered = getHover();
     for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
-            //skip current tile being hovered
+            //skip current vertex being hovered
             if(curHovered != undefined && curHovered.curRow == i && curHovered.curCol == j)
                 continue;
             let cur = graph[i][j];
@@ -82,10 +79,10 @@ function clearHighlight(){ //completes fadeout animation before program stops dr
 function nodeClaimed(x,y){
     for(let i of getConnected(x,y)){
         if(i.filled) continue;
-        if((i.available=="p1" && turn) || (i.available=="p2" && !turn))
+        if((i.available=="p1" && !turn) || (i.available=="p2" && turn))
             i.available = "none";
         else if(i.available != "none")
-            i.available = turn ? "p2" : "p1";
+            i.available = turn ? "p1" : "p2";
     }
 }
 

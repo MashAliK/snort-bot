@@ -1,14 +1,14 @@
-let tileLength = 100, numRow, numCol;
+let tileLength = 100, numRow = 1, numCol;
 window.tileLength = tileLength; 
 
 function validate(){
-    numRow = parseInt(document.getElementById('rowInput').value);
     numCol = parseInt(document.getElementById('colInput').value);
-    if(numRow <= 0 || numRow > 99 || numCol <=0 || numCol > 99)
+    if( numCol <=0 || numCol > 99)
         warn("Please enter a positive 2-digit number");
     else{
         //make variables global
-        window.numRow = numRow, window.numCol = numCol;
+        window.numCol = numCol;
+        window.numRow = numRow;
         startGame();
     }
 }

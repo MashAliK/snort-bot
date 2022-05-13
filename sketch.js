@@ -23,7 +23,10 @@ function draw(){
             else if(cur.available == "p2")
                 drawNode(cur.x,cur.y,0.5,i,j,0); 
             else{
-                drawNode(cur.x,cur.y,1,i,j,0); 
+                drawNode(cur.x,cur.y,0.5,i,j,255);
+                let r = length/2-length*0.25*Math.SQRT1_2;
+                line(cur.x+r,cur.y+r,cur.x+length-r,cur.y+length-r);
+                line(cur.x+r,cur.y+length-r,cur.x+length-r,cur.y+r);
             } 
                               
         }
