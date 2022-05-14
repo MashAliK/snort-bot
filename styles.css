@@ -38,8 +38,9 @@
     transition:0.4s;
 }
 #game-container{
-    padding-top: 10px;
-    height: 500px;
+    margin: 2rem;
+    padding-top: 1.5rem;
+    height: 100%;
     display: flex;
 }
 #game{
