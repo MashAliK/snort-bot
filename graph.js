@@ -1,7 +1,9 @@
 let row = window.parent.numRow, col = window.parent.numCol,
-    length = window.parent.tileLength, fadeSpeed = 20;
-player1 = {color: [0,0,255], bot: false};
-player2 = {color: [255,0,0], bot: false};
+    length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, availableSize = 0.45;
+player1 = {color: 255, bot: false};
+player2 = {color: 0, bot: false};
+
+
 turn = true; //true if it is player1's turn
 let graph = new Array(row); //2d array represents graph of the game
 for(let i = 0; i < row; i++){
@@ -12,7 +14,7 @@ function mouseMoved(){ //start/stop drawing based on mouse position
     let curPos = getHover();
     if(curPos != undefined && !graph[curPos.curRow][curPos.curCol].filled)
         loop();
-    else{
+    else if(curPos == undefined){
         clearHighlight();
     }
 }
@@ -25,13 +27,11 @@ function mouseClicked(){
     if((cur.available == "all") || (cur.available == "p1" && turn) || (cur.available == "p2" && !turn)){
         cur.available = turn ? "p1" : "p2";
         cur.filled = true;
-        let color = turn ? player1.color : player2.color;
-        cur.color[0] = color[0];
-        cur.color[1] = color[1];
-        cur.color[2] = color[2];
+        cur.color = turn ? player1.color : player2.color;
         nodeClaimed(curPos.curRow,curPos.curCol);
         turn = !turn;
     }
+    clearHighlight();
     clear();
     redraw();
 }
@@ -43,21 +43,31 @@ function getHover(){ //returns square that is hovered by the mouse
     return {curRow,curCol};
 }
 
-function hover(i,j,[r,g,b]){
+function hover(i,j){
     let cur = graph[i][j];
-    if(cur.filled == true) return;
-    cur.color[0] = (cur.color[0] < r) ? (cur.color[0]+fadeSpeed) : r;
-    cur.color[1] = (cur.color[1] < g) ? (cur.color[1]+fadeSpeed) : g;
-    cur.color[2] = (cur.color[2] < b) ? (cur.color[2]+fadeSpeed) : b;
-    if(cur.color[0] == r && cur.color[1] == g && cur.color[2] == b)
-        clearHighlight();
+    if(cur.filled == true ) return;
+    if(cur.available == "all"){
+        cur.size = (cur.size < filledSize) ? cur.size+0.01 : filledSize;
+        cur.color = turn ? player1.color : player2.color;
+        document.body.style.cursor = 'pointer';
+    } else if((cur.available == "p1" && turn) || (cur.available == "p2" && !turn)){
+        cur.size = (cur.size > filledSize) ? cur.size-0.01 : filledSize;
+        document.body.style.cursor = 'pointer';
+    }
 }
 
 function unhover(i,j){
     let cur = graph[i][j];
-    cur.color[0] = (cur.color[0] > 0) ? (cur.color[0]-fadeSpeed) : 0;
-    cur.color[1] = (cur.color[1] > 0) ? (cur.color[1]-fadeSpeed) : 0;
-    cur.color[2] = (cur.color[2] > 0) ? (cur.color[2]-fadeSpeed) : 0;
+    if(cur.filled == true || cur.available == "none") return;
+    if(cur.available == "all"){
+        cur.color = 0; 
+        cur.size = (cur.size > unFilledSize) ? cur.size-0.01 : unFilledSize;
+        document.body.style.cursor = 'default';
+    }else if(cur.available == "p1" || cur.available == "p2"){
+        cur.size = (cur.size < availableSize) ? cur.size+0.01 : availableSize;
+        document.body.style.cursor = 'default';
+    }
+    
 }
 
 function clearHighlight(){ //completes fadeout animation before program stops drawing
@@ -68,7 +78,8 @@ function clearHighlight(){ //completes fadeout animation before program stops dr
             if(curHovered != undefined && curHovered.curRow == i && curHovered.curCol == j)
                 continue;
             let cur = graph[i][j];
-            while(!cur.filled && (cur.color[0]!=0 || cur.color[1]!=0 || cur.color[2]!=0)){
+            while(!cur.filled && ((cur.available == "all" && cur.size != unFilledSize)
+                || ((cur.available == "p1" || cur.available == "p2") && cur.size != availableSize))){
                 unhover(i,j);
             }
         }
@@ -81,8 +92,10 @@ function nodeClaimed(x,y){
         if(i.filled) continue;
         if((i.available=="p1" && !turn) || (i.available=="p2" && turn))
             i.available = "none";
-        else if(i.available != "none")
+        else if(i.available != "none"){
             i.available = turn ? "p1" : "p2";
+            cur.size = availableSize;
+        }
     }
 }
 
@@ -111,7 +124,7 @@ function createGraph(){
         for(let j = 0; j < col; j++){
             //if not filled available describes which player can still fill it
             //otherwise available describes which color it is filled by
-            graph[i][j] = {x:xpos,y:ypos,color:[0,0,0],
+            graph[i][j] = {x:xpos,y:ypos,color: 0, size: unFilledSize,
                 filled: false, available: "all", connected: {edgeRow:[],edgeCol:[]}};
             if(i != 0)
                 addEdge(graph[i][j],i-1,j);
