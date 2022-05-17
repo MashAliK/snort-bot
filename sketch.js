@@ -1,16 +1,21 @@
 function setup(){
-    createCanvas(length*col,length*row);
+    createCanvas(length*col,length*row+50);
     createGraph();
 }
 
 function draw(){
     clear();
+    textAlign(CENTER);
     let color = turn ? player1.color : player2.color; 
     strokeWeight(3);
     let curPos = getHover();
-    for(let i = 0; i < row; i++)
+    for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
-            cur = graph[i][j]
+            if(i == 0){
+                fill(0);
+                text(`${j+1}`,length/2-1+j*length,length*0.6);
+            }
+            cur = graph[i][j];
             hovered = (curPos!= undefined && curPos.curRow == i && curPos.curCol == j) ? true : false;
             if(!hovered && cur.filled==false)
                 unhover(i,j);
@@ -27,9 +32,9 @@ function draw(){
                 let r = length/2-length*0.25*Math.SQRT1_2;
                 line(cur.x+r,cur.y+r,cur.x+length-r,cur.y+length-r);
                 line(cur.x+r,cur.y+length-r,cur.x+length-r,cur.y+r);
-            } 
-                              
+            }                   
         }
+    }
     if(curPos!=undefined){
         hover(curPos.curRow,curPos.curCol);
     }
@@ -38,7 +43,6 @@ function draw(){
 //draws circle representing node and edges connected it
 //circle size describles the size of a circle with a number between 0 and 1
 function drawNode(x,y,circleSize, curX, curY, color){
-    console.log(`${curX}, ${curY}, ${circleSize}`);
     fill(color);
     let d = length*circleSize;
     let lineLength =  0.5*length*(1-circleSize);

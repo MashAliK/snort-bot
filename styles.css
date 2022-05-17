@@ -49,13 +49,21 @@
     justify-content: center;
     transform-origin: top;
 }
-#initialize{
+#info,#initialize{
     margin: 0 auto;
-    padding: 0.5em 4em;
     overflow: hidden;
-    display: flex;
     top: 1em;
     justify-content: center;
+}
+#initialize{
+    display: flex;
+    padding: 0.5em 4em;
+}
+#info{
+    display:none;
+    width: 15rem;
+    padding: 0.5em;
+    margin-right: .75em;
 }
 #play-button{
     margin: 0 auto;

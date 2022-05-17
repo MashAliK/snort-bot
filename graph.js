@@ -1,10 +1,9 @@
 let row = window.parent.numRow, col = window.parent.numCol,
-    length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, availableSize = 0.45;
+    length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
+    availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50; 
 player1 = {color: 255, bot: false};
 player2 = {color: 0, bot: false};
 
-
-turn = true; //true if it is player1's turn
 let graph = new Array(row); //2d array represents graph of the game
 for(let i = 0; i < row; i++){
     graph[i]= new Array(col);
@@ -12,11 +11,10 @@ for(let i = 0; i < row; i++){
 
 function mouseMoved(){ //start/stop drawing based on mouse position
     let curPos = getHover();
-    if(curPos != undefined && !graph[curPos.curRow][curPos.curCol].filled)
-        loop();
-    else if(curPos == undefined){
+    if(curPos == undefined)
         clearHighlight();
-    }
+    else if(!graph[curPos.curRow][curPos.curCol].filled)
+        loop();
 }
 
 function mouseClicked(){
@@ -38,8 +36,8 @@ function mouseClicked(){
 
 function getHover(){ //returns square that is hovered by the mouse
     let x = mouseX, y = mouseY;
-    if(x>=length*col || y>=length*row || x<0 || y<0) return undefined;
-    let curCol = Math.floor(x/length), curRow = Math.floor(y/length);
+    if(x>=length*col || y>=length*row+yStart || x<0 || y<yStart) return undefined;
+    let curCol = Math.floor(x/length), curRow = Math.floor((y-yStart)/length);
     return {curRow,curCol};
 }
 
@@ -54,6 +52,9 @@ function hover(i,j){
         cur.size = (cur.size > filledSize) ? cur.size-0.01 : filledSize;
         document.body.style.cursor = 'pointer';
     }
+    if((cur.available == "all" || cur.available == "p1" || cur.available == "p2") && cur.size == filledSize
+        || (cur.available == "p1" && !turn) || (cur.available == "p2" && turn))
+        clearHighlight();
 }
 
 function unhover(i,j){
@@ -119,7 +120,7 @@ function addEdge(node,x,y){
 */
 function createGraph(){
     xpos = 0;
-    ypos = 0;
+    ypos = yStart;
     for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
             //if not filled available describes which player can still fill it
