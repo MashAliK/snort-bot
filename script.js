@@ -28,7 +28,7 @@ function startGame(){
     gameContainer.appendChild(gameFrame);
     if(tileLength*(numRow+1) > height)
         gameFrame.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
-    infoFrame.style.display = "flex";
+    infoFrame.parentElement.style.display = "flex";
     infoFrame.children[0].innerHTML = playerOneTurn ? "White" : "Black";    
 }
 
