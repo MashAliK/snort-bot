@@ -60,9 +60,15 @@
     padding: 0.5em 4em;
 }
 #info{
-    width: 15rem;
-    padding: 0.5em;
+    display:none;
+    margin-left: 3rem;
     margin-right: .75em;
+}
+#current-move, #history{
+    padding: 1rem;   
+}
+#history{
+    height: 15rem;
 }
 #play-button{
     margin: 0 auto;

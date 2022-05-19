@@ -21,6 +21,7 @@ function startGame(){
     let gameContainer = document.getElementById("game-container");
     let gameFrame = document.createElement("iframe");
     let infoFrame = document.getElementById("info")
+    let moveDisplay = document.getElementById("current-move");
     gameFrame.setAttribute('id', 'game')
     gameFrame.setAttribute('src', 'game.html')
     gameFrame.setAttribute('title', 'Game Graph')
@@ -29,8 +30,8 @@ function startGame(){
     gameContainer.appendChild(gameFrame);
     if(tileLength*(numRow+1) > height)
         gameFrame.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
-    infoFrame.parentElement.style.display = "flex";
-    infoFrame.children[0].innerHTML = playerOneTurn ? "White" : "Black"; 
+    infoFrame.style.display = "block";
+    moveDisplay.innerHTML = playerOneTurn ? "<b>White Starts</b>" : "<b>Black Starts</b>"; 
 }
 
 //make sure input forms only take positive numbers between 0 and 999
