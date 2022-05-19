@@ -29,6 +29,7 @@ function mouseClicked(){
         nodeClaimed(curPos.curRow,curPos.curCol);
         turn = !turn;
     }
+    document.body.style.cursor = 'default';
     checkWin();
     clearHighlight();
     clear();

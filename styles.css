@@ -63,13 +63,26 @@
     display:none;
     margin-left: 3rem;
     margin-right: .75em;
+    width: 12rem;
 }
-#current-move, #history{
-    padding: 1rem;   
+#current-move{
+    padding: 1rem; 
+    display: flex;
+    justify-content: center;
+}
+#history, #history tbody{
+    height: 12rem;
 }
 #history{
-    height: 15rem;
+    table-layout: fixed;
 }
+#history td, #history tr, #history th{
+    height: 16.67%;
+    padding: 0 1rem;
+    margin: 0;
+    text-align: center;
+}
+
 #play-button{
     margin: 0 auto;
     justify-content: center;
