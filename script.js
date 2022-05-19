@@ -1,6 +1,7 @@
 let tileLength = 100, numRow = 1, numCol, playerOneTurn = (Math.random()<.5);
 window.tileLength = tileLength; 
 
+
 function validate(){
     numCol = parseInt(document.getElementById('colInput').value);
     if( numCol <=0 || numCol > 99)
@@ -29,7 +30,7 @@ function startGame(){
     if(tileLength*(numRow+1) > height)
         gameFrame.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
     infoFrame.parentElement.style.display = "flex";
-    infoFrame.children[0].innerHTML = playerOneTurn ? "White" : "Black";    
+    infoFrame.children[0].innerHTML = playerOneTurn ? "White" : "Black"; 
 }
 
 //make sure input forms only take positive numbers between 0 and 999

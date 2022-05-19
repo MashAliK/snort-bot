@@ -29,9 +29,20 @@ function mouseClicked(){
         nodeClaimed(curPos.curRow,curPos.curCol);
         turn = !turn;
     }
+    checkWin();
     clearHighlight();
     clear();
     redraw();
+}
+
+function checkWin(){ //boolean true indicates player one win, undefined if no player has won yet
+    for(let i = 0; i < row; i++)
+        for(let j = 0; j < col; j++){
+            let cur = graph[i][j];
+            if(!cur.filled && (cur.available == "all" || (cur.available == "p1" && turn) || (cur.available == "p2" && !turn)))
+                return undefined;
+        }
+    return !turn;
 }
 
 function getHover(){ //returns square that is hovered by the mouse
