@@ -37,7 +37,7 @@
 .dropdown-item{
     transition:0.4s;
 }
-#container{
+#main-container{
     margin: 2rem;
     padding-top: 1.5rem;
     height: 100%;   
@@ -93,7 +93,6 @@
 #game-container{
     width:100%;
     display: none;
-    min-width: 600px;
 }
 #info-container{
     width:25%;
