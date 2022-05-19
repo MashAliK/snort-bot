@@ -1,9 +1,9 @@
 let row = window.parent.numRow, col = window.parent.numCol,
     length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
-    availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50; 
+    availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay; 
 player1 = {color: 255, bot: false};
 player2 = {color: 0, bot: false};
-
+let moveHistory = [];
 let graph = new Array(row); //2d array represents graph of the game
 for(let i = 0; i < row; i++){
     graph[i]= new Array(col);
@@ -28,9 +28,9 @@ function mouseClicked(){
         cur.color = turn ? player1.color : player2.color;
         nodeClaimed(curPos.curRow,curPos.curCol);
         turn = !turn;
+        checkWin();
+        document.body.style.cursor = 'default';
     }
-    document.body.style.cursor = 'default';
-    checkWin();
     clearHighlight();
     clear();
     redraw();

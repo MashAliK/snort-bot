@@ -27,11 +27,13 @@ function startGame(){
     gameFrame.setAttribute('title', 'Game Graph')
     gameFrame.style.width = `${tileLength*(numCol+1)}px`;
     gameFrame.style.height = `${tileLength*(numRow+1)}px`;
-    gameContainer.appendChild(gameFrame);
+    document.getElementById("game-frame").appendChild(gameFrame);
     if(tileLength*(numRow+1) > height)
         gameFrame.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
-    infoFrame.style.display = "block";
+    infoFrame.parentElement.style.display = "inline-block";
+    gameContainer.style.display = "inline";
     moveDisplay.innerHTML = playerOneTurn ? "<b>White Starts</b>" : "<b>Black Starts</b>"; 
+    window.moveDisplay = moveDisplay;
 }
 
 //make sure input forms only take positive numbers between 0 and 999

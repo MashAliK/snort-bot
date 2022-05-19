@@ -33,21 +33,26 @@
             </div>
         </div>
         </nav>
-        <div id="game-container" style="display:flex">
-            <div id="info">
-                <div id="current-move" class="bg-light shadow"></div>
-                <div id="history" class="bg-light shadow"><table class = "table table-bordered table-hover">
-                    <colgroup>
-                        <col span="1" style="width:33%">
-                        <col span="1" style="width:67%">
-                    </colgroup>
-                    <tr><th></th><td></td></tr>
-                    <tr><th></th><td></td></tr>
-                    <tr><th></th><td></td></tr>
-                    <tr><th></th><td></td></tr>
-                    <tr><th></th><td></td></tr>
-                    <tr><th></th><td></td></tr>
-                </table></div>
+        <div id="container">
+            <div id="game-container">
+                <div id="info-container">
+                    <div id="info">
+                        <div id="current-move" class="bg-light shadow"></div>
+                        <div id="history" class="bg-light shadow"><table class = "table table-bordered table-hover">
+                            <colgroup>
+                                <col span="1" style="width:33%">
+                                <col span="1" style="width:67%">
+                            </colgroup>
+                            <tr><th></th><td></td></tr>
+                            <tr><th></th><td></td></tr>
+                            <tr><th></th><td></td></tr>
+                            <tr><th></th><td></td></tr>
+                            <tr><th></th><td></td></tr>
+                            <tr><th></th><td></td></tr>
+                        </table></div>
+                    </div>
+                </div>
+                <div id="game-frame"></div>
             </div>
             <div id="initialize" class="card expandable bg-light shadow">
                 <div class="card-body">
@@ -66,7 +71,6 @@
                 <div class="alert alert-warning" role="alert" id="warning" style="display:none"></div>
             </div>
         </div>
-        
         <script src="script.js"></script>
     </body>
 </html>

@@ -37,17 +37,11 @@
 .dropdown-item{
     transition:0.4s;
 }
-#game-container{
+#container{
     margin: 2rem;
     padding-top: 1.5rem;
-    height: 100%;
+    height: 100%;   
     display: flex;
-}
-#game{
-    margin: 0 auto;
-    display: block;
-    justify-content: center;
-    transform-origin: top;
 }
 #info,#initialize{
     margin: 0 auto;
@@ -60,10 +54,8 @@
     padding: 0.5em 4em;
 }
 #info{
-    display:none;
     margin-left: 3rem;
     margin-right: .75em;
-    width: 12rem;
 }
 #current-move{
     padding: 1rem; 
@@ -92,4 +84,20 @@
 #warning{
     padding: 0.5em;
     margin: 1em;
+}
+#game-frame{
+    display: inline-flex;
+    width: 75%;
+    justify-content: center;
+}
+#game-container{
+    width:100%;
+    display: none;
+    min-width: 600px;
+}
+#info-container{
+    width:25%;
+    display:none;
+    float:left;
+    padding: 1rem;
 }
