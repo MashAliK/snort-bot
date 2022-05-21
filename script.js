@@ -1,5 +1,6 @@
 let tileLength = 100, numRow = 1, numCol, playerOneTurn = (Math.random()<.5);
-window.tileLength = tileLength, window.updateTable = updateTable, window.switchTurn = switchTurn; 
+    window.tileLength = tileLength, window.updateTable = updateTable, 
+    window.switchTurn = switchTurn, scrollSize = 20, window.scrollSize = scrollSize; 
 
 
 function validate(){
@@ -19,23 +20,34 @@ function startGame(){
     document.getElementById('initialize').style.display = "none";
     let height = window.innerHeight;
     let gameContainer = document.getElementById("game-container");
-    let gameFrame = document.createElement("iframe");
+    let game = document.createElement("iframe");
+    let gameFrame = document.getElementById("game-frame");
     let infoFrame = document.getElementById("info")
     let moveDisplay = document.getElementById("current-move");
-    gameFrame.setAttribute('id', 'game')
-    gameFrame.setAttribute('src', 'game.html')
-    gameFrame.setAttribute('title', 'Game Graph')
-    gameFrame.style.width = `${tileLength*(numCol+1)}px`;
-    gameFrame.style.height = `${tileLength*(numRow+1)}px`;
-    document.getElementById("game-frame").appendChild(gameFrame);
+    game.setAttribute('id', 'game');
+    game.setAttribute('src', 'game.html');
+    game.setAttribute('title', 'Game Graph');
+    game.style.width = `${tileLength*(numCol+1)}px`;
+    game.style.height = `${tileLength*(numRow+1)}px`;
+    gameFrame.append(game);
     if(tileLength*(numRow+1) > height)
-        gameFrame.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
+    game.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
     infoFrame.parentElement.style.display = "inline-block";
     gameContainer.style.display = "inline";
-    moveDisplay.innerHTML = playerOneTurn ? "<b>White Starts</b>" : "<b>Black Starts</b>"; 
+    moveDisplay.innerHTML = playerOneTurn ? "<b>White Starts</b>" : "<b>Black Starts</b>";
+    //add scrollbar if iframe width exceeds container width
+    if(tileLength*(numCol+1) > gameFrame.offsetWidth){
+        let scroll = document.createElement("iframe");
+        scroll.setAttribute('id', 'scroll');
+        scroll.setAttribute('src', 'scrollbar.html');
+        scroll.setAttribute('title', 'Scrollbar');
+        scroll.style.width = `${numCol*scrollSize+10}px`;
+        scroll.style.height = `${scrollSize*2}px`;
+        gameFrame.append(scroll);
+    } 
 }
 
-//make sure input forms only take positive numbers between 0 and 999
+//make sure input forms only take positive numbers between 0 and 99
 const number = document.getElementsByClassName('number');
 for(let x of number){
     x.onkeydown = function(char) {

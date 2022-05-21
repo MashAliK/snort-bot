@@ -89,14 +89,23 @@
     display: inline-flex;
     width: 75%;
     justify-content: center;
+    flex-wrap: wrap;
 }
 #game-container{
     width:100%;
     display: none;
+    justify-content: center;
 }
 #info-container{
     width:25%;
     display:none;
     float:left;
     padding: 1rem;
+}
+#scroll{
+    overflow: hidden;
+}
+#iframe-container{
+    display: inline-block;
+    justify-content: center;
 }

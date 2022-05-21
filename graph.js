@@ -164,4 +164,5 @@ function createGraph(){
         xpos=0; //begin new line
         ypos += length;
     }
+    top.graph = graph;
 }
