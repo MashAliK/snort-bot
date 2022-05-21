@@ -1,9 +1,11 @@
 let row = window.parent.numRow, col = window.parent.numCol,
     length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
-    availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay; 
+    availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay
+    updateTable = window.parent.updateTable, moveNum = 0;
 player1 = {color: 255, bot: false};
 player2 = {color: 0, bot: false};
-let moveHistory = [];
+let history = [];
+let game = {firstMove:turn, moveHistory:history};
 let graph = new Array(row); //2d array represents graph of the game
 for(let i = 0; i < row; i++){
     graph[i]= new Array(col);
@@ -27,13 +29,19 @@ function mouseClicked(){
         cur.filled = true;
         cur.color = turn ? player1.color : player2.color;
         nodeClaimed(curPos.curRow,curPos.curCol);
+        history.push({moveNumber:++moveNum,player: turn, x:curPos.curCol,y:curPos.curRow})
         turn = !turn;
+        updateTable(history);
         checkWin();
         document.body.style.cursor = 'default';
     }
     clearHighlight();
     clear();
     redraw();
+}
+
+function updateTable(){
+
 }
 
 function checkWin(){ //boolean true indicates player one win, undefined if no player has won yet
