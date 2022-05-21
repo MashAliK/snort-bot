@@ -1,5 +1,5 @@
 let tileLength = 100, numRow = 1, numCol, playerOneTurn = (Math.random()<.5);
-window.tileLength = tileLength, window.updateTable = updateTable; 
+window.tileLength = tileLength, window.updateTable = updateTable, window.switchTurn = switchTurn; 
 
 
 function validate(){
@@ -77,6 +77,9 @@ function updateTable(history){
         }
     }
 }
+
+function switchTurn(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "White" : "Black" )+ " Moves"}</b>`;}
+function displayWinner(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "White" : "Black" )+ " Wins!"}</b>`;}
 
 document.getElementById("initialize-form").addEventListener("submit", startGame);
 

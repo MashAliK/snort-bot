@@ -1,7 +1,8 @@
 let row = window.parent.numRow, col = window.parent.numCol,
     length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
     availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay
-    updateTable = window.parent.updateTable, moveNum = 0;
+    updateTable = window.parent.updateTable, moveNum = 0, switchTurn = window.parent.switchTurn, finished = false,
+    displayWinner = window.parent.displayWinner;
 player1 = {color: 255, bot: false};
 player2 = {color: 0, bot: false};
 let history = [];
@@ -20,6 +21,7 @@ function mouseMoved(){ //start/stop drawing based on mouse position
 }
 
 function mouseClicked(){
+    if(finished) return;
     let curPos = getHover();
     if(curPos == undefined) return;
     let cur = graph[curPos.curRow][curPos.curCol];
@@ -31,8 +33,9 @@ function mouseClicked(){
         nodeClaimed(curPos.curRow,curPos.curCol);
         history.push({moveNumber:++moveNum,player: turn, x:curPos.curCol,y:curPos.curRow})
         turn = !turn;
+        switchTurn(turn);
         updateTable(history);
-        checkWin();
+        checkWin()
         document.body.style.cursor = 'default';
     }
     clearHighlight();
@@ -44,14 +47,15 @@ function updateTable(){
 
 }
 
-function checkWin(){ //boolean true indicates player one win, undefined if no player has won yet
+function checkWin(){ //check if a player has won
     for(let i = 0; i < row; i++)
         for(let j = 0; j < col; j++){
             let cur = graph[i][j];
             if(!cur.filled && (cur.available == "all" || (cur.available == "p1" && turn) || (cur.available == "p2" && !turn)))
-                return undefined;
+                return;
         }
-    return !turn;
+    finished = true;
+    displayWinner(!turn);
 }
 
 function getHover(){ //returns square that is hovered by the mouse
