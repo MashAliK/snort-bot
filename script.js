@@ -75,8 +75,8 @@ function updateTable(history){
             <circle cx="8" cy="8" r="8"/>
             </svg>`) + `${moveList[i].x+1}`;
         }
-
     }
+    console.log('here');
 }
 
 document.getElementById("initialize-form").addEventListener("submit", startGame);
