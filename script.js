@@ -76,7 +76,6 @@ function updateTable(history){
             </svg>`) + `${moveList[i].x+1}`;
         }
     }
-    console.log('here');
 }
 
 document.getElementById("initialize-form").addEventListener("submit", startGame);
