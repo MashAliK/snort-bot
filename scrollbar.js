@@ -20,3 +20,15 @@ function draw(){
         square(j*squareSize,0,squareSize);
     }
 }
+
+function getHover(){ 
+    let x = mouseX;
+    if(x >= squareSize*col ||  x<0 ) return undefined;
+    return Math.floor(x/squareSize);
+}
+
+function mouseClicked(){
+    let clicked = getHover();
+    if(clicked == undefined) return;
+    top.scrollGame(clicked);
+}

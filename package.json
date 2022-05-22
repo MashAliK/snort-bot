@@ -1,0 +1,22 @@
+{
+  "name": "snortbot",
+  "version": "1.0.0",
+  "description": "snort ai",
+  "main": "graph.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MashAliK/snort-bot.git"
+  },
+  "author": "Mashhood Khan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MashAliK/snort-bot/issues"
+  },
+  "homepage": "https://github.com/MashAliK/snort-bot#readme",
+  "dependencies": {
+    "animated-scroll-to": "^2.2.0"
+  }
+}

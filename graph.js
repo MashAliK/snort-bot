@@ -2,7 +2,7 @@ let row = window.parent.numRow, col = window.parent.numCol,
     length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
     availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay
     updateTable = window.parent.updateTable, moveNum = 0, switchTurn = window.parent.switchTurn, finished = false,
-    displayWinner = window.parent.displayWinner;
+    displayWinner = window.parent.displayWinner, top.scrollGame = scrollGame;
 player1 = {color: 255, bot: false};
 player2 = {color: 0, bot: false};
 let history = [];
@@ -136,6 +136,8 @@ function addEdge(node,x,y){
     node.connected.edgeRow.push(x);
     node.connected.edgeCol.push(y);
 }
+
+function scrollGame(x){scrollTo(x*length,0);}
 
 /*available property has four states:
 1. all: either player can play here
