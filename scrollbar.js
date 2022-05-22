@@ -5,19 +5,17 @@ function setup(){
 }
 
 function draw(){
+    clear();
     let graph = top.graph;
     if(graph == undefined) return;
     for(let j = 0; j < col; j++){
-        if(graph[0][j].available == "all" ) 
-            fill(0,255,0);
-        else
-            fill(255);
-        if(j == 0)
-            square(j*squareSize,0,squareSize,5,0,0,5);
-        else if(j == col-1)
-            square(j*squareSize,0,squareSize,0,5,5,0);
-        else
-        square(j*squareSize,0,squareSize);
+        (getHover() === j) ? stroke(0,0,255) : stroke(0);
+        if(graph[0][j].available == "all"){
+            fill(0); circle((j+0.5)*squareSize,0.5*squareSize,0.2*squareSize);
+        }else if((graph[0][j].available == "p1" || graph[0][j].available == "p2") && !graph[0][j].filled){
+            (graph[0][j].available == "p1") ? fill(255) : fill(0);
+            circle((j+0.5)*squareSize,0.5*squareSize,0.6*squareSize);
+        } else if(getHover() === j){ fill(255,255,255,1); square(j*squareSize,0,squareSize);}
     }
 }
 

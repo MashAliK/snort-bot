@@ -27,11 +27,12 @@ function startGame(){
     game.setAttribute('id', 'game');
     game.setAttribute('src', 'game.html');
     game.setAttribute('title', 'Game Graph');
-    game.style.width = `${tileLength*(numCol+1)}px`;
-    game.style.height = `${tileLength*(numRow+1)}px`;
-    gameFrame.append(game);
+    gameFrame.children[0].append(game);
+    game.parentElement.style.width = `${tileLength*(numCol+1)}px`;
+    game.parentElement.style.height = `${tileLength*(numRow+1)}px`;
+    game.style.width = '100%'; game.style.height = '100%';
     if(tileLength*(numRow+1) > height)
-    game.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
+        game.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
     infoFrame.parentElement.style.display = "inline-block";
     gameContainer.style.display = "inline";
     moveDisplay.innerHTML = playerOneTurn ? "<b>White Starts</b>" : "<b>Black Starts</b>";
@@ -41,9 +42,11 @@ function startGame(){
         scroll.setAttribute('id', 'scroll');
         scroll.setAttribute('src', 'scrollbar.html');
         scroll.setAttribute('title', 'Scrollbar');
-        scroll.style.width = `${numCol*scrollSize+10}px`;
         scroll.style.height = `${scrollSize*2}px`;
-        gameFrame.append(scroll);
+        if(gameFrame.offsetWidth < numCol*scrollSize+10)
+            scroll.style.transform = `scale(${gameFrame.offsetWidth/(scrollSize*(numCol+1))})`;
+        scroll.style.width = `${numCol*scrollSize+10}px`;
+        gameFrame.children[1].append(scroll);
     } 
 }
 
