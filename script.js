@@ -35,6 +35,7 @@ function startGame(){
         game.style.transform = `scale(${height/(tileLength*(numRow+1))})`;
     infoFrame.parentElement.style.display = "inline-block";
     gameContainer.style.display = "inline";
+    window.containerWidth = gameFrame.offsetWidth;
     moveDisplay.innerHTML = playerOneTurn ? "<b>White Starts</b>" : "<b>Black Starts</b>";
     //add scrollbar if iframe width exceeds container width
     if(tileLength*(numCol+1) > gameFrame.offsetWidth){

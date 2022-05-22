@@ -1,4 +1,4 @@
-let squareSize = window.parent.scrollSize, col = window.parent.numCol;
+let squareSize = window.parent.scrollSize, col = window.parent.numCol, curPos = 1;
 
 function setup(){
     createCanvas(squareSize*col, squareSize);
@@ -17,6 +17,9 @@ function draw(){
             circle((j+0.5)*squareSize,0.5*squareSize,0.6*squareSize);
         } else if(getHover() === j){ fill(255,255,255,1); square(j*squareSize,0,squareSize);}
     }
+    //highlight currently visible portion
+    fill(125,125,125,125);
+    rect(top.getScroll().start*squareSize,0,(top.getScroll().end-top.getScroll().start)*squareSize,squareSize);
 }
 
 function getHover(){ 
@@ -28,5 +31,5 @@ function getHover(){
 function mouseClicked(){
     let clicked = getHover();
     if(clicked == undefined) return;
-    top.scrollGame(clicked);
+    top.setScroll(clicked);
 }
