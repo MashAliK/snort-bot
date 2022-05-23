@@ -107,7 +107,7 @@ function clearHighlight(){ //completes fadeout animation before program stops dr
             }
         }
     }
-    if(scrollState == 0) noLoop();
+    //if(scrollState == 0) noLoop();
 }
 
 function nodeClaimed(x,y){
