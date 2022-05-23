@@ -110,7 +110,7 @@
     display: inline-block;
     justify-content: center;
 }
-#left-scroll, #right-scroll{
+.scroller{
     position: absolute;
     z-index: 1;
 }
