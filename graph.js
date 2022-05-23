@@ -93,7 +93,8 @@ function unhover(i,j){
     
 }
 
-function clearHighlight(){ //completes fadeout animation before program stops drawing
+function clearHighlight(){ //completes fadeout animation before program stops drawing 
+    if(window.parent.scrollState != 0) return;
     let curHovered = getHover();
     for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
@@ -107,7 +108,7 @@ function clearHighlight(){ //completes fadeout animation before program stops dr
             }
         }
     }
-    //if(scrollState == 0) noLoop();
+    noLoop();
 }
 
 function nodeClaimed(x,y){

@@ -44,10 +44,10 @@ function startGame(){
     leftScroll.style.height = `${sketchContainer.offsetHeight}px`; leftScroll.style.width = `${0.1*sketchContainer.offsetWidth}px`;
     rightScroll.style.left = `${0.9*sketchContainer.offsetWidth}px`;
     rightScroll.style.height = `${sketchContainer.offsetHeight}px`; rightScroll.style.width = `${0.1*sketchContainer.offsetWidth}px`;
-    leftScroll.addEventListener('mouseenter',(e) => {scrollState = 1; game.contentWindow.loop(); window.scrollState = scrollState;});
-    rightScroll.addEventListener('mouseenter',(e) => {scrollState = 2; game.contentWindow.loop(); window.scrollState = scrollState;});
-    leftScroll.addEventListener('mouseleave',(e) => {scrollState = 0; window.scrollState = scrollState;});
-    rightScroll.addEventListener('mouseleave',(e) => {scrollState = 0; window.scrollState = scrollState;});
+    leftScroll.addEventListener('mouseenter',(e) => {scrollState = 1; window.scrollState = scrollState; game.contentWindow.loop();});
+    rightScroll.addEventListener('mouseenter',(e) => {scrollState = 2; window.scrollState = scrollState; game.contentWindow.loop();});
+    leftScroll.addEventListener('mouseleave',(e) => {scrollState = 0;  window.scrollState = scrollState; game.contentWindow.loop();});
+    rightScroll.addEventListener('mouseleave',(e) => {scrollState = 0;  window.scrollState = scrollState; game.contentWindow.loop();});
     const leftScrollOff = (x) => {(x) ? leftScroll.style.zIndex = '-1' : leftScroll.style.zIndex = '1'};
     const rightScrollOff = (x) => {(x) ? rightScroll.style.zIndex = '-1' : rightScroll.style.zIndex = '1'};
     window.leftScrollOff = leftScrollOff; window.rightScrollOff = rightScrollOff; 
