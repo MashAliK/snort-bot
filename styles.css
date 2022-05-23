@@ -86,6 +86,7 @@
     margin: 1em;
 }
 #game-frame{
+    position: relative;
     display: inline-flex;
     width: 75%;
     justify-content: center;
@@ -108,4 +109,11 @@
 #iframe-container{
     display: inline-block;
     justify-content: center;
+}
+#left-scroll, #right-scroll{
+    position: absolute;
+    z-index: 1;
+}
+#left-scroll{
+    top: 0px; left: 0px;
 }

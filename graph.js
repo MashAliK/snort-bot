@@ -106,7 +106,7 @@ function clearHighlight(){ //completes fadeout animation before program stops dr
             }
         }
     }
-    noLoop();
+    if(scrollState == 0) noLoop();
 }
 
 function nodeClaimed(x,y){
@@ -135,7 +135,15 @@ function addEdge(node,x,y){
 }
 
 function setScroll(x){scrollTo(x*length,0);}
-function getScroll(){return {start: scrollX/length, end: Math.floor((scrollX+window.parent.containerWidth)/length)};}
+//start and end are the first and last nodes visible on the users screen
+function getScroll(){return {start: Math.ceil(scrollX/length), end: Math.floor((scrollX+window.parent.containerWidth)/length)};}
+
+function autoScroll(){
+    let curPos = getHover(), scrollBound = getScroll();
+    if(curPos == undefined) return;
+    if(curPos.curCol-1 <= scrollBound.start) scrollTo(scrollX-15,0);
+    else if(curPos.curCol+1 >= scrollBound.end) scrollTo(scrollX+15,0);
+}
 
 /*available property has four states:
 1. all: either player can play here

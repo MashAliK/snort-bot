@@ -24,10 +24,14 @@ function startGame(){
     let gameFrame = document.getElementById("game-frame");
     let infoFrame = document.getElementById("info")
     let moveDisplay = document.getElementById("current-move");
+    let sketchContainer = document.getElementById('sketch-container');
+    let scrollContainer = document.getElementById('scrollbar-container');
+    let leftScroll = document.getElementById('left-scroll'); let rightScroll = document.getElementById('right-scroll');
+    let scrollState = 0; window.scrollState = scrollState;
     game.setAttribute('id', 'game');
     game.setAttribute('src', 'game.html');
     game.setAttribute('title', 'Game Graph');
-    gameFrame.children[0].append(game);
+    sketchContainer.append(game);
     game.parentElement.style.width = `${tileLength*(numCol+1)}px`;
     game.parentElement.style.height = `${tileLength*(numRow+1)}px`;
     game.style.width = '100%'; game.style.height = '100%';
@@ -37,6 +41,13 @@ function startGame(){
     gameContainer.style.display = "inline";
     window.containerWidth = gameFrame.offsetWidth;
     moveDisplay.innerHTML = playerOneTurn ? "<b>White Starts</b>" : "<b>Black Starts</b>";
+    leftScroll.style.height = `${sketchContainer.offsetHeight}px`; leftScroll.style.width = `${0.1*sketchContainer.offsetWidth}px`;
+    rightScroll.style.left = `${0.9*sketchContainer.offsetWidth}px`;
+    rightScroll.style.height = `${sketchContainer.offsetHeight}px`; rightScroll.style.width = `${0.1*sketchContainer.offsetWidth}px`;
+    leftScroll.addEventListener('mouseenter',(e) => {scrollState = 1; game.contentWindow.loop(); window.scrollState = scrollState;});
+    rightScroll.addEventListener('mouseenter',(e) => {scrollState = 2; game.contentWindow.loop(); window.scrollState = scrollState;});
+    leftScroll.addEventListener('mouseleave',(e) => {scrollState = 0; window.scrollState = scrollState;});
+    rightScroll.addEventListener('mouseleave',(e) => {scrollState = 0; window.scrollState = scrollState;;});
     //add scrollbar if iframe width exceeds container width
     if(tileLength*(numCol+1) > gameFrame.offsetWidth){
         let scroll = document.createElement("iframe");
@@ -47,8 +58,9 @@ function startGame(){
         if(gameFrame.offsetWidth < numCol*scrollSize+10)
             scroll.style.transform = `scale(${gameFrame.offsetWidth/(scrollSize*(numCol+1))})`;
         scroll.style.width = `${numCol*scrollSize+10}px`;
-        gameFrame.children[1].append(scroll);
-    } 
+        scrollContainer.append(scroll);
+        scrollContainer.style.width = `${scroll.offsetWidth}px`;
+    }
 }
 
 //make sure input forms only take positive numbers between 0 and 99
@@ -98,4 +110,3 @@ function switchTurn(turn){document.getElementById("current-move").innerHTML = `<
 function displayWinner(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "White" : "Black" )+ " Wins!"}</b>`;}
 
 document.getElementById("initialize-form").addEventListener("submit", startGame);
-
