@@ -8,8 +8,7 @@ function setup(){
 function draw(){
     clear();
     scrollState = window.parent.scrollState;
-    console.log(getScroll().end);
-    console.log(scrollState);
+    rightScrollOff = window.parent.rightScrollOff;
     if(scrollState == 1 && getScroll().start <= 0) leftScrollOff(true); else if(getScroll().start > 0) leftScrollOff(false);
     if(scrollState == 2 && getScroll().end >= col)  rightScrollOff(true); 
     else if(getScroll().end < col) rightScrollOff(false);
