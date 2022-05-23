@@ -47,7 +47,10 @@ function startGame(){
     leftScroll.addEventListener('mouseenter',(e) => {scrollState = 1; game.contentWindow.loop(); window.scrollState = scrollState;});
     rightScroll.addEventListener('mouseenter',(e) => {scrollState = 2; game.contentWindow.loop(); window.scrollState = scrollState;});
     leftScroll.addEventListener('mouseleave',(e) => {scrollState = 0; window.scrollState = scrollState;});
-    rightScroll.addEventListener('mouseleave',(e) => {scrollState = 0; window.scrollState = scrollState;;});
+    rightScroll.addEventListener('mouseleave',(e) => {scrollState = 0; window.scrollState = scrollState;});
+    const leftScrollOff = (x) => {(x) ? leftScroll.style.zIndex = '-1' : leftScroll.style.zIndex = '1'};
+    const rightScrollOff = (x) => {(x) ? rightScroll.style.zIndex = '-1' : rightScroll.style.zIndex = '1'};
+    window.leftScrollOff = leftScrollOff; window.rightScrollOff = rightScrollOff; 
     //add scrollbar if iframe width exceeds container width
     if(tileLength*(numCol+1) > gameFrame.offsetWidth){
         let scroll = document.createElement("iframe");

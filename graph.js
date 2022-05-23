@@ -2,7 +2,8 @@ let row = window.parent.numRow, col = window.parent.numCol,
     length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
     availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay
     updateTable = window.parent.updateTable, moveNum = 0, switchTurn = window.parent.switchTurn, finished = false,
-    displayWinner = window.parent.displayWinner, top.setScroll = setScroll, top.getScroll = getScroll;
+    displayWinner = window.parent.displayWinner, top.setScroll = setScroll, top.getScroll = getScroll, 
+    leftScrollOff = window.parent.leftScrollOff, rightScrollOff = window.parent.rightScrollOff;
 
 player1 = {color: 255, bot: false};
 player2 = {color: 0, bot: false};
