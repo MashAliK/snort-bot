@@ -11,7 +11,8 @@ function draw(){
     console.log(getScroll().end);
     console.log(scrollState);
     if(scrollState == 1 && getScroll().start <= 0) leftScrollOff(true); else if(getScroll().start > 0) leftScrollOff(false);
-    if(scrollState == 2 && getScroll().end >= col)  rightScrollOff(true); else if(getScroll().end < col) rightScrollOff(false);
+    if(scrollState == 2 && getScroll().end >= col)  rightScrollOff(true); 
+    else if(getScroll().end < col) rightScrollOff(false);
     if(scrollState == 1) scrollTo(scrollX-15,0); else if(scrollState == 2) scrollTo(scrollX+15,0);
     textAlign(CENTER);
     let color = turn ? player1.color : player2.color; 
