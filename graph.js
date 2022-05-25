@@ -140,13 +140,6 @@ function setScroll(x){scrollTo(x*length,0);}
 //start and end are the first and last nodes visible on the users screen
 function getScroll(){return {start: Math.ceil(scrollX/length), end: Math.floor((scrollX+window.parent.containerWidth)/length)};}
 
-function autoScroll(){
-    let curPos = getHover(), scrollBound = getScroll();
-    if(curPos == undefined) return;
-    if(curPos.curCol-1 <= scrollBound.start) scrollTo(scrollX-15,0);
-    else if(curPos.curCol+1 >= scrollBound.end) scrollTo(scrollX+15,0);
-}
-
 /*available property has four states:
 1. all: either player can play here
 2. p1/p2: only one of the players can play here

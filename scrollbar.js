@@ -31,5 +31,5 @@ function getHover(){
 function mouseClicked(){
     let clicked = getHover();
     if(clicked == undefined) return;
-    top.setScroll(clicked);
+    top.setScroll(clicked-0.5*(top.getScroll().end-top.getScroll().start));
 }
