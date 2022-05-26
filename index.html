@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <title>Snort Bot</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body style="background-color:rgba(168, 168, 168, 0.174)">
+        <nav class="navbar navbar-expand-sm bg-light shadow-sm">
+            <div class="ps-5">
+                <a class="navbar-brand logo" href="#">Snort Bot</a>
+            </div>
+            <ul class="navbar-nav px-3">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Play</a>
+                    <ul class="dropdown-menu fade-up ">
+                        <li><a class="dropdown-item">Against Human</a></li>
+                        <li><a class="dropdown-item">Against Computer</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#">Guide</a></li>
+            </ul>
+            <ul class="navbar-nav ms-auto mx-5">
+                <li class="nav-item"><a class="nav-link" href="https://github.com/MashAliK/snortBot"
+                    target="_blank"><img class="logo" src="icons/GitHub-Mark-32px.png" alt="github"></a></li>
+            </ul>
+            </div>
+        </div>
+        </nav>
+        <div id="main-container">
+            <div id="game-container">
+                <div id="info-container">
+                    <div id="info">
+                        <div id="current-move" class="bg-light shadow"></div>
+                        <div id="history" class="bg-light shadow"><table class = "table table-bordered table-hover">
+                            <colgroup>
+                                <col span="1" style="width:33%">
+                                <col span="1" style="width:67%">
+                            </colgroup>
+                            <tbody id = 'history-table-body'>
+                                <tr><th></th><td></td></tr>
+                                <tr><th></th><td></td></tr>
+                                <tr><th></th><td></td></tr>
+                                <tr><th></th><td></td></tr>
+                                <tr><th></th><td></td></tr>
+                                <tr><th></th><td></td></tr>
+                            </tbody>
+                        </table></div>
+                    </div>
+                </div>
+                <div id="game-frame">
+                    <div id="sketch-container"></div><div class="scroller" id="left-scroll"></div>
+                    <div class="scroller" id="right-scroll"></div><div id="scrollbar-container"></div>
+                </div>
+            </div>
+            <div id="initialize" class="card expandable bg-light shadow">
+                <div class="card-body">
+                    <p class="display-5 mx-5 my-4">Human Vs. Human</p>
+                    <form id="initialize-form">
+                        <!--
+                        <label for="rowInput">Number of rows:</label>
+                        <input class="number form-control mb-2" type="number"
+                         id="rowInput" name="rowInput" value="10" maxlength="2" min="0"><br>-->
+                        <label for="colInput">Number of columns:</label>
+                        <input class="number form-control mb-2" type="number"
+                         id="colInput" name="colInput" value="10" maxlength="2" min="0">
+                    </form>
+                    <button id="play-button" type="button" class="btn btn-success btn-lg" form="initialize-form" onclick="validate()">Play</button>
+                </div>
+                <div class="alert alert-warning" role="alert" id="warning" style="display:none"></div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
