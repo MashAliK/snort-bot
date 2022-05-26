@@ -1,10 +1,13 @@
 const express = require('express');
+let fs = require('fs');
+const path = require('path');
 const app = express();
+const router = express.Router();
 
-app.set('views', './views');
-app.set('view engine', 'ejs');
+router.get('/',function(req,res){
+    res.sendFile(__dirname + '/public/index.html');
+});
 
-app.get('/', (req, res) =>{
-    res.render("index");
-})
-app.listen(process.env.PORT);
+
+app.use(express.static('public'));
+app.listen(process.env.PORT || 3000);
