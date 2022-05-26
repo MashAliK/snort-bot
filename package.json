@@ -4,7 +4,8 @@
   "description": "AI program for the combinatorial game 'Snort'",
   "main": "graph.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/MashAliK/snort-bot/issues"
   },
-  "homepage": "https://github.com/MashAliK/snort-bot#readme"
+  "homepage": "https://github.com/MashAliK/snort-bot#readme",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
 }
