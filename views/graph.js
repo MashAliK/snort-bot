@@ -5,8 +5,8 @@ let row = window.parent.numRow, col = window.parent.numCol,
     displayWinner = window.parent.displayWinner, top.setScroll = setScroll, top.getScroll = getScroll, 
     leftScrollOff = window.parent.leftScrollOff, rightScrollOff = window.parent.rightScrollOff;
 
-player1 = {color: 0, bot: false};
-player2 = {color: 255, bot: false};
+player1 = {color: 255, bot: false};
+player2 = {color: 0, bot: false};
 let history = [];
 let game = {firstMove:turn, moveHistory:history};
 let graph = new Array(row); //2d array represents graph of the game

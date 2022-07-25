@@ -1,0 +1,119 @@
+.logo{
+    font-family: "Bebas Neue";
+    font-size: 2em;
+    transition: 0.3s;
+    opacity: 75%;
+}
+.logo:hover{
+    opacity: 100%;
+}
+.nav-item{
+    font-family: Helvetica, sans-serif;
+    font-size: 1em;
+    opacity: 100%;
+}
+.nav-link {
+    color: black;
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+    transition: 0.4s;
+}
+.dropdown-item:hover{
+    cursor: pointer;
+    color: blue;
+}
+.dropdown-menu{  
+    display:block; 
+    opacity: 0;
+    visibility: hidden; 
+    transition:.2s; 
+    margin-top:8px;  
+}
+.nav-item:hover .dropdown-menu{ 
+    transition: .2s; 
+    opacity:1;
+    visibility:visible; 
+}
+.dropdown-item{
+    transition:0.4s;
+}
+#main-container{
+    margin: 2rem;
+    padding-top: 1.5rem;
+    height: 100%;   
+    display: flex;
+}
+#info,#initialize{
+    margin: 0 auto;
+    overflow: hidden;
+    top: 1em;
+    justify-content: center;
+}
+#initialize{
+    display: flex;
+    padding: 0.5em 4em;
+}
+#info{
+    margin-left: 3rem;
+    margin-right: .75em;
+}
+#current-move{
+    padding: 1rem; 
+    display: flex;
+    justify-content: center;
+}
+#history, #history tbody{
+    height: 12rem;
+}
+#history{
+    table-layout: fixed;
+}
+#history td, #history tr, #history th{
+    height: 16.67%;
+    padding: 0 1rem;
+    margin: 0;
+    text-align: center;
+}
+
+#play-button{
+    margin: 0 auto;
+    justify-content: center;
+    display: block;
+    margin-top: 1.5em;
+}
+#warning{
+    padding: 0.5em;
+    margin: 1em;
+}
+#game-frame{
+    position: relative;
+    display: inline-flex;
+    width: 75%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+#game-container{
+    width:100%;
+    display: none;
+    justify-content: center;
+}
+#info-container{
+    width:25%;
+    display:none;
+    float:left;
+    padding: 1rem;
+}
+#scroll{
+    overflow: hidden;
+}
+#iframe-container{
+    display: inline-block;
+    justify-content: center;
+}
+.scroller{
+    position: absolute;
+    z-index: 1;
+}
+#left-scroll{
+    top: 0px; left: 0px;
+}
