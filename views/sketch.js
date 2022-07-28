@@ -1,8 +1,9 @@
 function setup(){
     createCanvas(length*col,length*row+50);
     createGraph();
+    hoverEnabled = turn ? !player1.bot : !player2.bot;
+    botMove();
     redraw();
-    noLoop();
 }
 
 function draw(){
@@ -31,9 +32,9 @@ function draw(){
             else if(cur.available == "all"){
                 drawNode(i,j,cur.color);
             }else if(cur.available == "p1")
-                drawNode(i,j,255);
+                drawNode(i,j,cur.color);
             else if(cur.available == "p2")
-                drawNode(i,j,0); 
+                drawNode(i,j,cur.color); 
         }
     }
     if(curPos!=undefined){

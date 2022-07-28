@@ -1,11 +1,11 @@
 let tileLength = 100, numRow = 1, numCol, playerOneTurn = (Math.random()<.5);
     window.tileLength = tileLength, window.updateTable = updateTable, 
-    window.switchTurn = switchTurn, scrollSize = 20, window.scrollSize = scrollSize; 
+    window.switchTurn = switchTurn, scrollSize = 20, window.scrollSize = scrollSize;
 
 function validate(){
     numCol = parseInt(document.getElementById('colInput').value);
-    if( numCol <=0 || numCol > 99)
-        warn("Please enter a positive 2-digit number");
+    if( numCol <=1 || numCol > 99)
+        warn("Please enter a positive 2-digit number greater than 1");
     else{
         //make variables global
         window.numCol = numCol;
@@ -39,7 +39,7 @@ function startGame(){
     infoFrame.parentElement.style.display = "inline-block";
     gameContainer.style.display = "inline";
     window.containerWidth = gameFrame.offsetWidth;
-    moveDisplay.innerHTML = playerOneTurn ? "<b>White Starts</b>" : "<b>Black Starts</b>";
+    moveDisplay.innerHTML = playerOneTurn ? "<b>Black Starts</b>" : "<b>White Starts</b>";
     leftScroll.style.height = `${sketchContainer.offsetHeight}px`; leftScroll.style.width = `${0.1*sketchContainer.offsetWidth}px`;
     rightScroll.style.left = `${0.9*sketchContainer.offsetWidth}px`;
     rightScroll.style.height = `${sketchContainer.offsetHeight}px`; rightScroll.style.width = `${0.1*sketchContainer.offsetWidth}px`;
@@ -108,7 +108,7 @@ function updateTable(history){
     }
 }
 
-function switchTurn(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "White" : "Black" )+ " Moves"}</b>`;}
-function displayWinner(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "White" : "Black" )+ " Wins!"}</b>`;}
+function switchTurn(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "Black" : "White" )+ " Moves"}</b>`;}
+function displayWinner(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "Black" : "White" )+ " Wins!"}</b>`;}
 
 document.getElementById("initialize-form").addEventListener("submit", startGame);

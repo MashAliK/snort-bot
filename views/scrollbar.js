@@ -13,7 +13,7 @@ function draw(){
         if(graph[0][j].available == "all"){
             fill(0); circle((j+0.5)*squareSize,0.5*squareSize,0.2*squareSize);
         }else if((graph[0][j].available == "p1" || graph[0][j].available == "p2") && !graph[0][j].filled){
-            (graph[0][j].available == "p1") ? fill(255) : fill(0);
+            (graph[0][j].available == "p1") ? fill(0) : fill(255);
             circle((j+0.5)*squareSize,0.5*squareSize,0.6*squareSize);
         } else if(getHover() === j){ fill(255,255,255,1); square(j*squareSize,0,squareSize);}
     }

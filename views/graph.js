@@ -1,12 +1,12 @@
-let row = window.parent.numRow, col = window.parent.numCol,
+let row = window.parent.numRow, col = window.parent.numCol, hoverEnabled = true, ambientTemp = 2,
     length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
     availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay
     updateTable = window.parent.updateTable, moveNum = 0, switchTurn = window.parent.switchTurn, finished = false,
     displayWinner = window.parent.displayWinner, top.setScroll = setScroll, top.getScroll = getScroll, 
     leftScrollOff = window.parent.leftScrollOff, rightScrollOff = window.parent.rightScrollOff;
 
-player1 = {color: 255, bot: false};
-player2 = {color: 0, bot: false};
+player1 = {color: 0, bot: false};
+player2 = {color: 255, bot: true};
 let history = [];
 let game = {firstMove:turn, moveHistory:history};
 let graph = new Array(row); //2d array represents graph of the game
@@ -22,27 +22,85 @@ function mouseMoved(){ //start/stop drawing based on mouse position
         loop();
 }
 
+function playerMove(curRow, curCol){
+    let cur = graph[curRow][curCol];
+    cur.available = turn ? "p1" : "p2";
+    cur.filled = true;
+    cur.color = turn ? player1.color : player2.color;
+    nodeClaimed(curRow,curCol);
+    history.push({moveNumber:++moveNum,player: turn, x:curCol,y:curRow})
+    turn = !turn;
+    hoverEnabled = (turn) ? !player1.bot : !player2.bot;
+    switchTurn(turn);
+    updateTable(history);
+    checkWin()
+    document.body.style.cursor = 'default';
+}
+
 function mouseClicked(){
-    if(finished) return;
+    if(finished || !hoverEnabled) return;
     let curPos = getHover();
     if(curPos == undefined) return;
     let cur = graph[curPos.curRow][curPos.curCol];
-    if(cur.filled) return; 
-    if((cur.available == "all") || (cur.available == "p1" && turn) || (cur.available == "p2" && !turn)){
-        cur.available = turn ? "p1" : "p2";
-        cur.filled = true;
-        cur.color = turn ? player1.color : player2.color;
-        nodeClaimed(curPos.curRow,curPos.curCol);
-        history.push({moveNumber:++moveNum,player: turn, x:curPos.curCol,y:curPos.curRow})
-        turn = !turn;
-        switchTurn(turn);
-        updateTable(history);
-        checkWin()
-        document.body.style.cursor = 'default';
-    }
+    if(cur.filled)
+        return
+    if((cur.available == "all") || (cur.available == "p1" && turn) || (cur.available == "p2" && !turn))
+        playerMove(curPos.curRow,curPos.curCol);
     clearHighlight();
     clear();
     redraw();
+    botMove();
+}
+
+function graphToChain(graphrow){
+    const nodeType = (available) => {
+        if(available === "p1")
+                return "L";
+            else if(available === "p2")
+                return "R";
+            else
+                return "U";
+    }
+    var chains = [];
+    var curChain = {start: "", len: 0, end: ""};
+    const pushChain = (i) =>{ //add curChain and reset it
+        curChain.end = nodeType(graphrow[i-1].available); 
+        chains.push(curChain.start+curChain.len.toString()+curChain.end);
+        curChain.len = 0;
+    }
+    for(var i = 0; i < col; i++){
+        if(graphrow[i].filled){
+            if(curChain.len === 0)
+                continue;
+            pushChain(i);
+        }
+        else if(curChain.len === 0 && graphrow[i].available != "none"){ //new chain
+            curChain.start = nodeType(graphrow[i].available);
+            curChain.len = 1;
+        }else if(curChain.len > 0)
+            curChain.len++;
+
+    }
+    if(curChain.len > 0)
+        pushChain(col);
+    return chains;
+}
+
+function botMove(){
+    if(!(turn && player1.bot) && !(!turn && player2.bot) || finished)
+        return;
+    var chains = graphToChain(graph[0]);
+    var numOnly = true;
+    for(const c of chains)
+        if(parseInt(c.slice(1,-1)) > 2)
+            numOnly = false;
+    if(numOnly)
+        ambientTemp = 0;
+    var socket = io();
+    socket.emit('optimalMove',[graphToChain(graph[0]),null,turn,ambientTemp], (resp) =>{
+        playerMove(0,componentToPosition(resp.move));
+    });
+    loop();
 }
 
 function checkWin(){ //check if a player has won
@@ -56,6 +114,26 @@ function checkWin(){ //check if a player has won
     displayWinner(!turn);
 }
 
+function componentToPosition(comp){
+    var compCount = -1;
+    var inComp = false;
+    var i = -1;
+    for(const node of graph[0]){
+        i++;
+        if(inComp){
+            if(node.available === "none" || node.filled)
+                inComp = false;
+            else 
+                continue;
+        }else if(node.available != "none" && !node.filled){
+            compCount++;
+            if(compCount === comp[0])
+                return i+comp[1];
+            inComp = true;
+        }
+    }
+}
+
 function getHover(){ //returns square that is hovered by the mouse
     let x = mouseX, y = mouseY;
     if(x>=length*col || y>=length*row+yStart || x<0 || y<yStart) return undefined;
@@ -64,6 +142,8 @@ function getHover(){ //returns square that is hovered by the mouse
 }
 
 function hover(i,j){
+    if(!hoverEnabled)
+        return;
     let cur = graph[i][j];
     if(cur.filled == true ) return;
     if(cur.available == "all"){
@@ -118,6 +198,7 @@ function nodeClaimed(x,y){
             i.available = "none";
         else if(i.available != "none"){
             i.available = turn ? "p1" : "p2";
+            i.color = turn ? player1.color : player2.color;
             cur.size = availableSize;
         }
     }
@@ -152,8 +233,15 @@ function createGraph(){
         for(let j = 0; j < col; j++){
             //if not filled available describes which player can still fill it
             //otherwise available describes which color it is filled by
-            graph[i][j] = {x:xpos,y:ypos,color: 0, size: unFilledSize,
-                filled: false, available: "all", connected: {edgeRow:[],edgeCol:[]}};
+            if(j === 0)
+                graph[i][j] = {x:xpos,y:ypos,color: player1.color, size: unFilledSize,
+                    filled: false, available: "p1", connected: {edgeRow:[],edgeCol:[]}};
+            else if (j === col-1)
+                graph[i][j] = {x:xpos,y:ypos,color: player2.color, size: unFilledSize,
+                    filled: false, available: "p2", connected: {edgeRow:[],edgeCol:[]}};
+            else
+                graph[i][j] = {x:xpos,y:ypos,color: 0, size: unFilledSize,
+                    filled: false, available: "all", connected: {edgeRow:[],edgeCol:[]}};
             if(i != 0)
                 addEdge(graph[i][j],i-1,j);
             if(i != row-1)

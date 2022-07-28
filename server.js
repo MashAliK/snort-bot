@@ -6,6 +6,7 @@ const server = http.createServer(app)
 const router = express.Router();
 const PORT = 3000;
 const { Server } = require('socket.io');
+const { optimalMove } = require('./snortbot');
 const io = new Server(server);
 
 app.use("public",express.static(__dirname + '/public'));
@@ -20,10 +21,10 @@ app.get('/',function(req,res){
 
 io.on('connection', (socket) => {
     console.log('a user connected');
-    socket.on('message', (msg, callback) =>{
-        console.log("User says: "+msg);
+    socket.on('optimalMove', (arg,callback) =>{
+        console.log("User says: "+arg);
         callback(
-            { status : "ok"}
+            {move: optimalMove(arg[0],arg[1],arg[2],arg[3])}
         );
     });
 });

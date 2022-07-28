@@ -52,7 +52,7 @@ function temp(chain){
             return 1;
         else
             return 2
-    }else if(start === 'L' && end === 'L'){
+    }else if(start === 'L' && end === 'L' || start === 'R' && end === 'R' ){
         if(n === 0 || n === 1 || n === 2)
             return -1;
         else if(n%6 === 2)
@@ -70,7 +70,7 @@ function orthodoxMove(chain, player, ambientTemp){
     var n = parseInt(chain.slice(1,-1));
     var end = chain.charAt(chain.length-1);
     if(n === 0 || n === 1 || n === 2)
-        return findPlayable([chain], player)[1];
+        return findPlayable(chain, player)[1];
     if(n === 3)
         return 1;
     if(start === 'R' && end === 'L')
@@ -84,13 +84,13 @@ function orthodoxMove(chain, player, ambientTemp){
 function findPlayable(game, player){
     for(var i = 0; i < game.length; i++){
         var g = game[i];
-        if((g.charAt(1) === '1' && ((g.charAt(0) === 'L' && player === 0) 
-            || (g.charAt(0) === 'R' && player === 1))) || (g.charAt(1) 
-            === '2' && ((g.charAt(0) === 'L' && player === 0) 
-            || (g.charAt(0) === 'R' && player === 1))))
+        if((g.charAt(1) === '1' && ((g.charAt(0) === 'L' && player) 
+            || (g.charAt(0) === 'R' && !player))) || (g.charAt(1) 
+            === '2' && ((g.charAt(0) === 'L' && player) 
+            || (g.charAt(0) === 'R' && !player))))
             return [i, 0];
-        else if(g.charAt(1) === '2' && ((g.charAt(2) === 'L' && player === 0) ||
-            (g.charAt(2) === 'R' && player === 1)))
+        else if(g.charAt(1) === '2' && ((g.charAt(2) === 'L' && player) ||
+            (g.charAt(2) === 'R' && !player)))
             return [i, 1];
     }
 }
