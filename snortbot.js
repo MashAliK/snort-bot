@@ -69,30 +69,63 @@ function orthodoxMove(chain, player, ambientTemp){
     var start = chain.charAt(0);
     var n = parseInt(chain.slice(1,-1));
     var end = chain.charAt(chain.length-1);
+    const allChoices = (nums, mod) => {
+        var matching = [];
+        for(var i = 2; i < n; i++)
+            for(const j of nums)
+                if(i % mod === j)
+                    matching.push(i);
+        return matching;
+    };
     if(n === 0 || n === 1 || n === 2)
-        return findPlayable(chain, player)[1];
+        return findPlayable([chain], player)[1];
     if(n === 3)
         return 1;
-    if(start === 'R' && end === 'L')
+    if(start === 'R' && (end === 'L' || end === 'R'))
         player = (player === 1) ? 0 : 1;
-    var move = 2;
+    var moves, optimalMove;
+    if((start === 'L' && end === 'R') || (start === 'R' && end === 'L'))
+        moves = allChoices([2],3);
+    else if ((start === 'L' && end === 'L') || (start === 'R' && end === 'R')){
+        if(player === 1){
+            moves = allChoices([0],1);
+        }else{
+            if((n % 3 === 0) || (n % 3 === 1))
+                moves = [2];
+            else 
+                moves = allChoices([2],3);
+        }
+    }
+    optimalMove = moves[Math.floor(Math.random() * moves.length)];
     if(player === 1)
-        move = n-move-1;
-    return move;
+        optimalMove = n-optimalMove;
+    return optimalMove-1;
 }
 
 function findPlayable(game, player){
+    //search for star components 
+    for(var i = 0; i < game.length; i++){
+        var g = game[i];
+        if(g.charAt(1) === '2' && ((g.charAt(0) === 'L' && g.charAt(2) == 'R' && player) 
+            || (g.charAt(0) === 'R' && g.charAt(2) === 'L' && !player)))
+            return [i, 0];
+        else if(g.charAt(1) === '2' && ((g.charAt(0) === 'R' && g.charAt(2) == 'L' && player) 
+            || (g.charAt(0) === 'L' && g.charAt(2) === 'R' && !player)))
+            return [i, 1];
+    }
+    //search for numbers
     for(var i = 0; i < game.length; i++){
         var g = game[i];
         if((g.charAt(1) === '1' && ((g.charAt(0) === 'L' && player) 
             || (g.charAt(0) === 'R' && !player))) || (g.charAt(1) 
-            === '2' && ((g.charAt(0) === 'L' && player) 
-            || (g.charAt(0) === 'R' && !player))))
+            === '2' && ((g.charAt(0) === 'L' && g.charAt(2) != 'R' && player) 
+            || (g.charAt(0) === 'R' && g.charAt(2) != 'L' && !player))))
             return [i, 0];
-        else if(g.charAt(1) === '2' && ((g.charAt(2) === 'L' && player) ||
-            (g.charAt(2) === 'R' && !player)))
+        else if(g.charAt(1) === '2' && ((g.charAt(2) === 'L' && g.charAt(0) != 'R' && player) ||
+            (g.charAt(2) === 'R' && g.charAt(0) != 'L' && !player)))
             return [i, 1];
     }
+    return null;
 }
 
 exports.optimalMove = optimalMove;

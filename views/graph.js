@@ -199,7 +199,7 @@ function nodeClaimed(x,y){
         else if(i.available != "none"){
             i.available = turn ? "p1" : "p2";
             i.color = turn ? player1.color : player2.color;
-            cur.size = availableSize;
+            i.size = availableSize;
         }
     }
 }
