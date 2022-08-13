@@ -8,6 +8,7 @@ let row = window.parent.numRow, col = window.parent.numCol, hoverEnabled = true,
 player1 = {color: 0, bot: false};
 player2 = {color: 255, bot: true};
 let history = [];
+let newChains = null;
 let game = {firstMove:turn, moveHistory:history};
 let graph = new Array(row); //2d array represents graph of the game
 for(let i = 0; i < row; i++){
@@ -24,10 +25,14 @@ function mouseMoved(){ //start/stop drawing based on mouse position
 
 function playerMove(curRow, curCol){
     let cur = graph[curRow][curCol];
+    moveRange = getChainIndex(curRow, curCol);
     cur.available = turn ? "p1" : "p2";
     cur.filled = true;
     cur.color = turn ? player1.color : player2.color;
+    console.log(moveRange[0]);
+    console.log(moveRange[1]);
     nodeClaimed(curRow,curCol);
+    console.log("New chains: "+graphToChain(graph[0],moveRange[0],moveRange[1]));
     history.push({moveNumber:++moveNum,player: turn, x:curCol,y:curRow})
     turn = !turn;
     hoverEnabled = (turn) ? !player1.bot : !player2.bot;
@@ -43,7 +48,7 @@ function mouseClicked(){
     if(curPos == undefined) return;
     let cur = graph[curPos.curRow][curPos.curCol];
     if(cur.filled)
-        return
+        return;
     if((cur.available == "all") || (cur.available == "p1" && turn) || (cur.available == "p2" && !turn))
         playerMove(curPos.curRow,curPos.curCol);
     clearHighlight();
@@ -52,23 +57,27 @@ function mouseClicked(){
     botMove();
 }
 
-function graphToChain(graphrow){
+function graphToChain(graphrow, start, end){
+    if(start == undefined)
+        start = 0;
+    if(end == undefined)
+        end = col
     const nodeType = (available) => {
         if(available === "p1")
                 return "L";
-            else if(available === "p2")
-                return "R";
-            else
-                return "U";
+        else if(available === "p2")
+            return "R";
+        else
+            return "U";
     }
     var chains = [];
     var curChain = {start: "", len: 0, end: ""};
-    const pushChain = (i) =>{ //add curChain and reset it
+    const pushChain = (i) => { //add curChain and reset it
         curChain.end = nodeType(graphrow[i-1].available); 
         chains.push(curChain.start+curChain.len.toString()+curChain.end);
         curChain.len = 0;
-    }
-    for(var i = 0; i < col; i++){
+    };
+    for(var i = start; i < end; i++){
         if(graphrow[i].filled){
             if(curChain.len === 0)
                 continue;
@@ -82,7 +91,7 @@ function graphToChain(graphrow){
 
     }
     if(curChain.len > 0)
-        pushChain(col);
+        pushChain(end);
     return chains;
 }
 
@@ -170,7 +179,6 @@ function unhover(i,j){
         cur.size = (cur.size < availableSize) ? cur.size+0.01 : availableSize;
         document.body.style.cursor = 'default';
     }
-    
 }
 
 function clearHighlight(){ //completes fadeout animation before program stops drawing 
@@ -198,14 +206,36 @@ function nodeClaimed(x,y){
             i.available = "none";
         else if(i.available != "none"){
             i.available = turn ? "p1" : "p2";
+            i.chainEnd = true;
             i.color = turn ? player1.color : player2.color;
             i.size = availableSize;
         }
     }
 }
 
+function getChainIndex(x, y){
+    var start = 0, end = col-1;
+    for(var i = 0; i < col; i++){
+        if(i <= y && graph[x][i].chainEnd && graph[x][i].available != "none" && !graph[x][i].filled){
+            console.log("i: "+i);
+            if(i == y && ((i == col-1) || (graph[x][i+1].available == "none" || graph[x][i+1].filled))){
+                if(i == 0 || (graph[x][i-1].available == "none" || graph[x][i-1].filled))
+                    return [y,y+1];
+                else
+                    return [start,y+1];
+            }
+            start = i;
+        }
+        if(i >= y && graph[x][i].chainEnd && graph[x][i].available != "none" && !graph[x][i].filled){
+            end = i;
+            break;
+        }
+    }
+    return [start,end+1];
+}
+
 function getConnected(x, y){ //get all nodes connected to the current node by an edge
-    connectedNodes = [];
+    var connectedNodes = [];
     for(let h = 0; h < graph[x][y].connected.edgeCol.length; h++)
             connectedNodes.push(graph[graph[x][y].connected.edgeRow[h]]
                 [graph[x][y].connected.edgeCol[h]]);
@@ -235,13 +265,16 @@ function createGraph(){
             //otherwise available describes which color it is filled by
             if(j === 0)
                 graph[i][j] = {x:xpos,y:ypos,color: player1.color, size: unFilledSize,
-                    filled: false, available: "p1", connected: {edgeRow:[],edgeCol:[]}};
+                    filled: false, available: "p1", connected: {edgeRow:[],edgeCol:[]}
+                    ,chainEnd: true};
             else if (j === col-1)
                 graph[i][j] = {x:xpos,y:ypos,color: player2.color, size: unFilledSize,
-                    filled: false, available: "p2", connected: {edgeRow:[],edgeCol:[]}};
+                    filled: false, available: "p2", connected: {edgeRow:[],edgeCol:[]}
+                    ,chainEnd: true};
             else
                 graph[i][j] = {x:xpos,y:ypos,color: 0, size: unFilledSize,
-                    filled: false, available: "all", connected: {edgeRow:[],edgeCol:[]}};
+                    filled: false, available: "all", connected: {edgeRow:[],edgeCol:[]}
+                    ,chainEnd: false};
             if(i != 0)
                 addEdge(graph[i][j],i-1,j);
             if(i != row-1)
