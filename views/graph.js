@@ -5,8 +5,8 @@ let row = window.parent.numRow, col = window.parent.numCol, hoverEnabled = true,
     displayWinner = window.parent.displayWinner, top.setScroll = setScroll, top.getScroll = getScroll, 
     leftScrollOff = window.parent.leftScrollOff, rightScrollOff = window.parent.rightScrollOff;
 
-player1 = {color: 0, bot: false};
-player2 = {color: 255, bot: true};
+player1 = {color: 0, bot: false, prevTemp: null};
+player2 = {color: 255, bot: true, prevTemp: null};
 let history = [];
 let newChains = null;
 let game = {firstMove:turn, moveHistory:history};
@@ -29,11 +29,13 @@ function playerMove(curRow, curCol){
     cur.available = turn ? "p1" : "p2";
     cur.filled = true;
     cur.color = turn ? player1.color : player2.color;
-    console.log(moveRange[0]);
-    console.log(moveRange[1]);
     nodeClaimed(curRow,curCol);
-    console.log("New chains: "+graphToChain(graph[0],moveRange[0],moveRange[1]));
-    history.push({moveNumber:++moveNum,player: turn, x:curCol,y:curRow})
+    newLeftChain = graphToChain(graph[0],moveRange[0],curCol);
+    newRightChain = graphToChain(graph[0],curCol,moveRange[1]);
+    newLeftChain = (newLeftChain.length === 0) ? null : newLeftChain[0];
+    newRightChain = (newRightChain.length === 0) ? null : newRightChain[0];
+    newChains = [newLeftChain, newRightChain];
+    history.push({moveNumber:++moveNum,player: turn, x:curCol,y:curRow});
     turn = !turn;
     hoverEnabled = (turn) ? !player1.bot : !player2.bot;
     switchTurn(turn);
@@ -99,14 +101,9 @@ function botMove(){
     if(!(turn && player1.bot) && !(!turn && player2.bot) || finished)
         return;
     var chains = graphToChain(graph[0]);
-    var numOnly = true;
-    for(const c of chains)
-        if(parseInt(c.slice(1,-1)) > 2)
-            numOnly = false;
-    if(numOnly)
-        ambientTemp = 0;
     var socket = io();
-    socket.emit('optimalMove',[graphToChain(graph[0]),null,turn,ambientTemp], (resp) =>{
+    ambientTemp = Math.min(...(turn ? player1.prevTemp : player2.prevTemp));
+    socket.emit('optimalMove',[graphToChain(graph[0]),newChains,turn,ambientTemp], (resp) =>{
         playerMove(0,componentToPosition(resp.move));
     });
     loop();
@@ -217,7 +214,6 @@ function getChainIndex(x, y){
     var start = 0, end = col-1;
     for(var i = 0; i < col; i++){
         if(i <= y && graph[x][i].chainEnd && graph[x][i].available != "none" && !graph[x][i].filled){
-            console.log("i: "+i);
             if(i == y && ((i == col-1) || (graph[x][i+1].available == "none" || graph[x][i+1].filled))){
                 if(i == 0 || (graph[x][i-1].available == "none" || graph[x][i-1].filled))
                     return [y,y+1];
@@ -257,6 +253,10 @@ function getScroll(){return {start: Math.ceil(scrollX/length), end: Math.floor((
 3. none: neither player can play here
 */
 function createGraph(){
+    player1.prevTemp = new Set();
+    player2.prevTemp = new Set();
+    player1.prevTemp.add(2);
+    player2.prevTemp.add(2);
     xpos = 0;
     ypos = yStart;
     for(let i = 0; i < row; i++){

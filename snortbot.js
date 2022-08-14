@@ -19,22 +19,36 @@
 const Decimal = require('decimal.js');
 
 const optimalMove = (game, residue, player, ambientTemp) => {
+    const findComp = (targetChain) => {
+            for(var i = 0; i < game.length ; i++){
+                if(game[i] === targetChain){
+                    return i;
+                }
+            }
+    };
     var optimalComponent = 0;
     if(ambientTemp === 0)
         return findPlayable(game, player);
-    if(residue === null || (residue[0] != null && residue[1] != null 
-        && (ambientTemp > temp(game[residue[0]]) && ambientTemp > temp(game[residue[1]])))
-        || (residue[0] === null && ambientTemp > temp(game[residue[1]])) || 
-        (residue[1] === null && ambientTemp > temp(game[residue[0]]))){ //play hotstrat
-        for(var i = 1; i < game.length; i++)
-            if(temp(game[i]) > temp(game[optimalComponent]))
+    if(residue === null || (residue[0] === null && residue[1] === null) 
+        || (residue[0] != null && residue[1] != null 
+        && (ambientTemp > temp(residue[0]) && ambientTemp > temp(residue[1])))
+        || (residue[0] === null && ambientTemp > temp(residue[1])) || 
+        (residue[1] === null && ambientTemp > temp(residue[0]))){ //play hotstrat
+        while(temp(game[optimalComponent]) == -1 
+                && findPlayable([game[optimalComponent]], player) == null) //start at first playable component
+            optimalComponent++;
+        for(var i = optimalComponent+1; i < game.length; i++){
+            var compTemp = temp(game[i]);
+            if((compTemp != -1 || (findPlayable([game[i]], player) != null))
+                 && compTemp > temp(game[optimalComponent]))
                 optimalComponent = i;
+        }
     }else if(residue[0] === null)
-        optimalComponent = residue[1];
+        optimalComponent = findComp(residue[1]);
     else if(residue[1] === null)
-        optimalComponent = residue[0];
+        optimalComponent = findComp(residue[0]);
     else 
-        optimalComponent = ((temp(game[residue[0]]) > temp(game[residue[1]])) ? residue[0] : residue[1]);
+        optimalComponent = ((temp(residue[0]) > temp(residue[1])) ? findComp(residue[0]) : findComp(residue[1]));
     return [optimalComponent, orthodoxMove(game[optimalComponent], player, ambientTemp)];
 };
 
