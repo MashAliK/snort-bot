@@ -5,8 +5,8 @@ let row = window.parent.numRow, col = window.parent.numCol, hoverEnabled = true,
     displayWinner = window.parent.displayWinner, top.setScroll = setScroll, top.getScroll = getScroll, 
     leftScrollOff = window.parent.leftScrollOff, rightScrollOff = window.parent.rightScrollOff;
 
-player1 = {color: 0, bot: false, prevTemp: null};
-player2 = {color: 255, bot: true, prevTemp: null};
+player1 = {color: 0,   bot: false, prevTemp: null};
+player2 = {color: 255, bot: true,  prevTemp: null};
 let history = [];
 let newChains = null;
 let game = {firstMove:turn, moveHistory:history};
@@ -42,6 +42,7 @@ function playerMove(curRow, curCol){
     updateTable(history);
     checkWin()
     document.body.style.cursor = 'default';
+    botMove();
 }
 
 function mouseClicked(){
@@ -56,7 +57,6 @@ function mouseClicked(){
     clearHighlight();
     clear();
     redraw();
-    botMove();
 }
 
 function graphToChain(graphrow, start, end){
@@ -100,10 +100,11 @@ function graphToChain(graphrow, start, end){
 function botMove(){
     if(!(turn && player1.bot) && !(!turn && player2.bot) || finished)
         return;
-    var chains = graphToChain(graph[0]);
     var socket = io();
-    ambientTemp = Math.min(...(turn ? player1.prevTemp : player2.prevTemp));
+    var curP = turn ? player1 : player2;
+    ambientTemp = Math.min(...curP.prevTemp);
     socket.emit('optimalMove',[graphToChain(graph[0]),newChains,turn,ambientTemp], (resp) =>{
+        curP.prevTemp.add(resp.move[2]);
         playerMove(0,componentToPosition(resp.move));
     });
     loop();

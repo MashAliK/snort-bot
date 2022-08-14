@@ -14,7 +14,6 @@ function draw(){
     else if(getScroll().end < col) rightScrollOff(false);
     if(scrollState == 1) scrollTo(scrollX-15,0); else if(scrollState == 2) scrollTo(scrollX+15,0);
     textAlign(CENTER);
-    let color = turn ? player1.color : player2.color; 
     strokeWeight(3);
     let curPos = getHover();
     for(let i = 0; i < row; i++){

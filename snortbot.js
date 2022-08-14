@@ -26,9 +26,13 @@ const optimalMove = (game, residue, player, ambientTemp) => {
                 }
             }
     };
+    if(ambientTemp < 0) ambientTemp = 0;
     var optimalComponent = 0;
-    if(ambientTemp === 0)
-        return findPlayable(game, player);
+    if(ambientTemp === 0){
+        var optMove = findPlayable(game, player);
+        optMove.push(-1);
+        return optMove;
+    }
     if(residue === null || (residue[0] === null && residue[1] === null) 
         || (residue[0] != null && residue[1] != null 
         && (ambientTemp > temp(residue[0]) && ambientTemp > temp(residue[1])))
@@ -49,7 +53,7 @@ const optimalMove = (game, residue, player, ambientTemp) => {
         optimalComponent = findComp(residue[0]);
     else 
         optimalComponent = ((temp(residue[0]) > temp(residue[1])) ? findComp(residue[0]) : findComp(residue[1]));
-    return [optimalComponent, orthodoxMove(game[optimalComponent], player, ambientTemp)];
+    return [optimalComponent, orthodoxMove(game[optimalComponent], player, ambientTemp), temp(game[optimalComponent])];
 };
 
 function temp(chain){
