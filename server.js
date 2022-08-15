@@ -3,14 +3,13 @@ const path = require('path');
 const http = require('http');
 const app = express();
 const server = http.createServer(app)
-const router = express.Router();
 const PORT = 3000;
 const { Server } = require('socket.io');
 const { optimalMove } = require('./snortbot');
 const io = new Server(server);
 
-app.use("public",express.static(__dirname + '/public'));
-app.set("views", path.join(__dirname+ "/views"));
+//app.use("public",express.static(__dirname + '/public'));
+app.set("views", path.join(__dirname+ "/views/pages"));
 app.set("view engine", "ejs");
 
 

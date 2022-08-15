@@ -3,7 +3,6 @@ function setup(){
     createGraph();
     hoverEnabled = turn ? !player1.bot : !player2.bot;
     botMove();
-    redraw();
 }
 
 function draw(){

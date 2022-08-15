@@ -98,7 +98,7 @@ function graphToChain(graphrow, start, end){
 }
 
 function botMove(){
-    if(!(turn && player1.bot) && !(!turn && player2.bot) || finished)
+    if((!(turn && player1.bot) && !(!turn && player2.bot)) || finished)
         return;
     var socket = io();
     var curP = turn ? player1 : player2;
@@ -106,6 +106,7 @@ function botMove(){
     socket.emit('optimalMove',[graphToChain(graph[0]),newChains,turn,ambientTemp], (resp) =>{
         curP.prevTemp.add(resp.move[2]);
         playerMove(0,componentToPosition(resp.move));
+        redraw();
     });
     loop();
 }

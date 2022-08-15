@@ -28,7 +28,7 @@ function startGame(){
     let leftScroll = document.getElementById('left-scroll'); let rightScroll = document.getElementById('right-scroll');
     let scrollState = 0; window.scrollState = scrollState;
     game.setAttribute('id', 'game');
-    game.setAttribute('src', 'game.html');
+    game.setAttribute('src', 'pages/game.html');
     game.setAttribute('title', 'Game Graph');
     sketchContainer.append(game);
     game.parentElement.style.width = `${tileLength*(numCol+1)}px`;
@@ -54,7 +54,7 @@ function startGame(){
     if(tileLength*(numCol+1) > gameFrame.offsetWidth){
         let scroll = document.createElement("iframe");
         scroll.setAttribute('id', 'scroll');
-        scroll.setAttribute('src', 'scrollbar.html');
+        scroll.setAttribute('src', 'pages/scrollbar.html');
         scroll.setAttribute('title', 'Scrollbar');
         scroll.style.height = `${scrollSize*2}px`;
         if(gameFrame.offsetWidth < numCol*scrollSize+10)
