@@ -1,19 +1,17 @@
-let row = window.parent.numRow, col = window.parent.numCol, hoverEnabled = true, ambientTemp = 2,
+let row = window.parent.numRow, hoverEnabled = true, ambientTemp = 2,
     length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
     availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay
     updateTable = window.parent.updateTable, moveNum = 0, switchTurn = window.parent.switchTurn, finished = false,
     displayWinner = window.parent.displayWinner, top.setScroll = setScroll, top.getScroll = getScroll, 
     leftScrollOff = window.parent.leftScrollOff, rightScrollOff = window.parent.rightScrollOff;
 
+var col;
+var graph;
 player1 = {color: 0,   bot: false, prevTemp: null};
 player2 = {color: 255, bot: true,  prevTemp: null};
 let history = [];
 let newChains = null;
 let game = {firstMove:turn, moveHistory:history};
-let graph = new Array(row); //2d array represents graph of the game
-for(let i = 0; i < row; i++){
-    graph[i]= new Array(col);
-}
 
 function mouseMoved(){ //start/stop drawing based on mouse position
     let curPos = getHover();
@@ -255,6 +253,10 @@ function getScroll(){return {start: Math.ceil(scrollX/length), end: Math.floor((
 3. none: neither player can play here
 */
 function createGraph(){
+    graph = new Array(row); //2d array represents graph of the game
+    for(let i = 0; i < row; i++){
+        graph[i]= new Array(col);
+    }
     player1.prevTemp = new Set();
     player2.prevTemp = new Set();
     player1.prevTemp.add(2);

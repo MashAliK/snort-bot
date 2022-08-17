@@ -1,43 +1,17 @@
 <%- include('../partials/_header.ejs') %>
 <div id="main-container">
-    <div id="game-container">
-        <div id="info-container">
-            <div id="info">
-                <div id="current-move" class="bg-light shadow"></div>
-                <div id="history" class="bg-light shadow"><table class = "table table-bordered table-hover">
-                    <colgroup>
-                        <col span="1" style="width:33%">
-                        <col span="1" style="width:67%">
-                    </colgroup>
-                    <tbody id = 'history-table-body'>
-                        <tr><th></th><td></td></tr>
-                        <tr><th></th><td></td></tr>
-                        <tr><th></th><td></td></tr>
-                        <tr><th></th><td></td></tr>
-                        <tr><th></th><td></td></tr>
-                        <tr><th></th><td></td></tr>
-                    </tbody>
-                </table></div>
-            </div>
-        </div>
-        <div id="game-frame">
-            <div id="sketch-container"></div><div class="scroller" id="left-scroll"></div>
-            <div class="scroller" id="right-scroll"></div><div id="scrollbar-container"></div>
-        </div>
-    </div>
     <div id="initialize" class="card expandable bg-light shadow">
         <div class="card-body">
             <p class="display-5 mx-5 my-4">Human Vs. Human</p>
-            <form id="initialize-form">
+            <form id="initialize-form" action="/" method="post">
                 <label for="colInput">Number of columns:</label>
                 <input class="number form-control mb-2" type="number"
-                 id="colInput" name="colInput" value="15" maxlength="2" min="0">
+                 id="colInput" name="colInput" value="15" maxlength="2" min="2" max="99">
+                <input id="play-button" class="btn btn-success btn-lg" type="submit" value="Play">
+                <%# <button  type="button"  form="initialize-form" onclick="validate()">Play</button> %>
             </form>
-            <button id="play-button" type="button" class="btn btn-success btn-lg" form="initialize-form" onclick="validate()">Play</button>
         </div>
         <div class="alert alert-warning" role="alert" id="warning" style="display:none"></div>
     </div>
 </div>
-<script src="/socket.io/socket.io.js"></script> 
-<script src="pages/script.js"></script>
 <%- include('../partials/_footer') %>

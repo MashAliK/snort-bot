@@ -2,16 +2,17 @@ let tileLength = 100, numRow = 1, numCol, playerOneTurn = (Math.random()<.5);
     window.tileLength = tileLength, window.updateTable = updateTable, 
     window.switchTurn = switchTurn, scrollSize = 20, window.scrollSize = scrollSize;
 
+    
 function validate(){
     numCol = parseInt(document.getElementById('colInput').value);
-    if( numCol <=1 || numCol > 99)
+    if(numCol < 2 || numCol > 99)
         warn("Please enter a positive 2-digit number greater than 1");
     else{
         //make variables global
         window.numCol = numCol;
         window.numRow = numRow;
         window.playerOneTurn = playerOneTurn;
-        startGame();
+        //startGame();
     }
 }
 

@@ -1,3 +1,8 @@
+html,
+body{
+    height: 100%;
+    margin: 0;
+}
 .logo{
     font-family: "Bebas Neue";
     font-size: 2em;
@@ -38,10 +43,23 @@
     transition:0.4s;
 }
 #main-container{
-    margin: 2rem;
-    padding-top: 1.5rem;
-    height: 100%;   
     display: flex;
+    flex-flow: row wrap;
+    height: 36rem;
+    align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 5%;
+}
+#main-container > div{
+    border: 1px solid black;
+    margin: 2rem;
+}
+#game-frame{
+    flex: 5 1 auto;
+}
+#info-container{
+    flex: 1 2 auto;
 }
 #info,#initialize{
     margin: 0 auto;
@@ -84,24 +102,6 @@
 #warning{
     padding: 0.5em;
     margin: 1em;
-}
-#game-frame{
-    position: relative;
-    display: inline-flex;
-    width: 75%;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-#game-container{
-    width:100%;
-    display: none;
-    justify-content: center;
-}
-#info-container{
-    width:25%;
-    display:none;
-    float:left;
-    padding: 1rem;
 }
 #scroll{
     overflow: hidden;

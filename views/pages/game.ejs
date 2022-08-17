@@ -1,0 +1,34 @@
+<%- include('../partials/_header.ejs') %>
+<div id="main-container">
+    <div id="info-container">
+        <div id="current-move" class="bg-light shadow"></div>
+        <div id="history" class="bg-light shadow">
+            <table class = "table table-bordered table-hover">
+                <colgroup>
+                    <col span="1" style="width:33%">
+                    <col span="1" style="width:67%">
+                </colgroup>
+                <tbody id = 'history-table-body'>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="game-frame">
+        <div id="sketch-container">
+            <iframe id="game" src="<%= `/pages/game.html?${numCol}` %>" title="Game"></iframe>
+        </div>
+        <div id="scrollbar-container"></div>
+    </div>
+</div>
+<script>
+    var col = <%- numCol %>;
+    console.log(col);
+    </script>
+<script src="/socket.io/socket.io.js"></script> 
+<%- include('../partials/_footer') %>
