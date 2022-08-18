@@ -24,8 +24,8 @@ function playerMove(curRow, curCol){
     cur.filled = true;
     cur.color = turn ? player1.color : player2.color;
     nodeClaimed(curRow,curCol);
-    newLeftChain = graphToChain(graph[0],moveRange[0],curCol);
-    newRightChain = graphToChain(graph[0],curCol,moveRange[1]);
+    newLeftChain = graphToChain(graph[curRow],moveRange[0],curCol);
+    newRightChain = graphToChain(graph[curRow],curCol,moveRange[1]);
     newLeftChain = (newLeftChain.length === 0) ? null : newLeftChain[0];
     newRightChain = (newRightChain.length === 0) ? null : newRightChain[0];
     newChains = [newLeftChain, newRightChain];
@@ -33,8 +33,6 @@ function playerMove(curRow, curCol){
     turn = !turn;
     hoverEnabled = (turn) ? !player1.bot : !player2.bot;
     checkWin();
-    game.curTurn = turn;
-    game.end = finished;
     parent.postMessage(game,"*");
     document.body.style.cursor = 'default';
     botMove();
@@ -98,9 +96,13 @@ function botMove(){
     var socket = io();
     var curP = turn ? player1 : player2;
     ambientTemp = Math.min(...curP.prevTemp);
-    socket.emit('optimalMove',[graphToChain(graph[0]),newChains,turn,ambientTemp], (resp) =>{
+    allChains = [];
+    for(var i = 0; i < row; i++)
+        allChains = allChains.concat(graphToChain(graph[i]));
+    socket.emit('optimalMove',[allChains,newChains,turn,ambientTemp], (resp) =>{
         curP.prevTemp.add(resp.move[2]);
-        playerMove(0,componentToPosition(resp.move));
+        var move = componentToPosition(resp.move);
+        playerMove(move[0],move[1]);
         redraw();
     });
     loop();
@@ -118,20 +120,22 @@ function checkWin(){ //check if a player has won
 
 function componentToPosition(comp){
     var compCount = -1;
-    var inComp = false;
-    var i = -1;
-    for(const node of graph[0]){
-        i++;
-        if(inComp){
-            if(node.available === "none" || node.filled)
-                inComp = false;
-            else 
-                continue;
-        }else if(node.available != "none" && !node.filled){
-            compCount++;
-            if(compCount === comp[0])
-                return i+comp[1];
-            inComp = true;
+    for(var j = 0; j < row; j++){
+        var inComp = false;
+        var i = -1;
+        for(const node of graph[j]){
+            i++;
+            if(inComp){
+                if(node.available === "none" || node.filled)
+                    inComp = false;
+                else 
+                    continue;
+            }else if(node.available != "none" && !node.filled){
+                compCount++;
+                if(compCount === comp[0])
+                    return [j,i+comp[1]];
+                inComp = true;
+            }
         }
     }
 }
@@ -275,10 +279,6 @@ function createGraph(){
                 graph[i][j] = {x:xpos,y:ypos,color: 0, size: unFilledSize,
                     filled: false, available: "all", connected: {edgeRow:[],edgeCol:[]}
                     ,chainEnd: false};
-            if(i != 0)
-                addEdge(graph[i][j],i-1,j);
-            if(i != row-1)
-                addEdge(graph[i][j],i+1,j);
             if(j != 0)
                 addEdge(graph[i][j],i,j-1);
             if(j != col-1)

@@ -20,10 +20,7 @@
         </div>
     </div>
     <div id="game-frame">
-        <div id="sketch-container">
-            <iframe id="game" src="<%= `/pages/game.html?col=${numCol}&row=1&p1bot=false&p2bot=true` %>" scrolling="no" title="Game"></iframe>
-        </div>
-        <div id="scrollbar-container"></div>
+            <iframe id="game" src="<%= `/pages/game.html?col=${numCol}&row=${numCol}&p1bot=false&p2bot=true` %>" scrolling="no" title="Game"></iframe>
     </div>
 </div>
 <script src="/pages/script.js"></script>

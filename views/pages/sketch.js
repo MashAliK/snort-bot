@@ -46,9 +46,5 @@ function drawNode(curY, curX, color){
         line(x-d/2, y,x-length/2,y);
     if(curX != col-1 && !graph[curY][curX+1].filled)
         line(x+d/2, y,x+length/2,y);
-    if(curY != 0 && !graph[curY-1][curX].filled)
-        line(x, y-d/2,x,y-length); 
-    if(curY != row-1 && !graph[curY+1][curX].filled)
-        line(x, y+d/2,x,y+length);
     circle(x,y,d);
 }

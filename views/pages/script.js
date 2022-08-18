@@ -114,7 +114,6 @@ function displayWinner(turn){document.getElementById("current-move").innerHTML =
 
 window.addEventListener('message', (e) =>{
     switchTurn(e.data.curTurn);
-    console.log(e.data.curTurn);
     updateTable(e.data.moveHistory)
     if(e.data.end) displayWinner(!e.data.curTurn);
 });

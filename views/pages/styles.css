@@ -12,10 +12,14 @@ body{
 .logo:hover{
     opacity: 100%;
 }
+.navbar-nav{
+    display: inline-block;
+}
 .nav-item{
     font-family: Helvetica, sans-serif;
     font-size: 1em;
     opacity: 100%;
+    display: inline-block;
 }
 .nav-link {
     color: black;
@@ -27,21 +31,6 @@ body{
     cursor: pointer;
     color: blue;
 }
-.dropdown-menu{  
-    display:block; 
-    opacity: 0;
-    visibility: hidden; 
-    transition:.2s; 
-    margin-top:8px;  
-}
-.nav-item:hover .dropdown-menu{ 
-    transition: .2s; 
-    opacity:1;
-    visibility:visible; 
-}
-.dropdown-item{
-    transition:0.4s;
-}
 #main-container{
     display: flex;
     flex-flow: row wrap;
@@ -49,7 +38,6 @@ body{
     align-items: center;
     margin-left: 10%;
     margin-right: 10%;
-    padding: 5%;
 }
 #main-container > div{
     border: 1px solid black;
@@ -58,11 +46,13 @@ body{
 #game-frame{
     flex: 10 1 auto;
     position: relative;
-    padding-top: 50%;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
 }
 #info-container{
     flex: 1 2 auto;
+    width: 20%;
+    max-width: 20%;
 }
 #info,#initialize{
     margin: 0 auto;
@@ -114,17 +104,7 @@ body{
     padding: 0.5em;
     margin: 1em;
 }
-#scroll{
-    overflow: hidden;
-}
 #iframe-container{
     display: inline-block;
     justify-content: center;
-}
-.scroller{
-    position: absolute;
-    z-index: 1;
-}
-#left-scroll{
-    top: 0px; left: 0px;
 }
