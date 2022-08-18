@@ -1,8 +1,9 @@
-let tileLength = 100, numRow = 1, numCol, playerOneTurn = (Math.random()<.5);
-    window.tileLength = tileLength, window.updateTable = updateTable, 
-    window.switchTurn = switchTurn, scrollSize = 20, window.scrollSize = scrollSize;
-
-    
+/*
+window.tileLength = tileLength, window.updateTable = updateTable, 
+window.switchTurn = switchTurn, scrollSize = 20, window.scrollSize = scrollSize;
+*/
+const game = document.getElementById('game');
+const gameFrame = document.getElementById('game-frame');
 function validate(){
     numCol = parseInt(document.getElementById('colInput').value);
     if(numCol < 2 || numCol > 99)
@@ -111,4 +112,9 @@ function updateTable(history){
 function switchTurn(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "Black" : "White" )+ " Moves"}</b>`;}
 function displayWinner(turn){document.getElementById("current-move").innerHTML = `<b>${(turn ? "Black" : "White" )+ " Wins!"}</b>`;}
 
-document.getElementById("initialize-form").addEventListener("submit", startGame);
+window.addEventListener('message', (e) =>{
+    switchTurn(e.data.curTurn);
+    console.log(e.data.curTurn);
+    updateTable(e.data.moveHistory)
+    if(e.data.end) displayWinner(!e.data.curTurn);
+});
