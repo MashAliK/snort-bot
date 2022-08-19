@@ -1,5 +1,5 @@
-//var length = (parent.document.body.clientHeight)/(parseInt(col)+1);
-var length = (window.parent.document.getElementById('game').offsetWidth)/(parseInt(col)+1);
+var hLen = (window.parent.document.getElementById('game').offsetHeight)/(parseInt(row)+1);
+var wLen = (window.parent.document.getElementById('game').offsetWidth)/(parseInt(col)+1);
 
 function setup(){
     createCanvas(window.parent.innerWidth,window.parent.innerHeight);
@@ -10,7 +10,8 @@ function setup(){
 
 function draw(){
     clear();
-    length = (window.parent.document.getElementById('game').offsetWidth)/(parseInt(col)+1);
+    hLen = (window.parent.document.getElementById('game').offsetHeight)/(parseInt(row)+1);
+    wLen = (window.parent.document.getElementById('game').offsetWidth)/(parseInt(col)+1);
     strokeWeight(3);
     let curPos = getHover();
     for(let i = 0; i < row; i++){
@@ -37,14 +38,14 @@ function draw(){
 //draws circle representing node and edges connected it
 //circle size describles the size of a circle with a number between 0 and 1
 function drawNode(curY, curX, color){
-    let y = length*(curY+1/2), x=length*(curX+1/2), circleSize = graph[curY][curX].size;
+    let y = hLen*(curY+1/2), x = wLen*(curX+1/2), circleSize = graph[curY][curX].size;
     graph[curY][curX].x = x;
     graph[curY][curX].y = y;
     fill(color);
-    let d = length*circleSize;
+    let d = hLen*circleSize;
     if(curX != 0 && !graph[curY][curX-1].filled)
-        line(x-d/2, y,x-length/2,y);
+        line(x-d/2, y,x-wLen/2,y);
     if(curX != col-1 && !graph[curY][curX+1].filled)
-        line(x+d/2, y,x+length/2,y);
+        line(x+d/2, y,x+wLen/2,y);
     circle(x,y,d);
 }

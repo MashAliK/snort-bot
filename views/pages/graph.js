@@ -33,6 +33,8 @@ function playerMove(curRow, curCol){
     turn = !turn;
     hoverEnabled = (turn) ? !player1.bot : !player2.bot;
     checkWin();
+    game.curTurn = turn;
+    game.end = finished;
     parent.postMessage(game,"*");
     document.body.style.cursor = 'default';
     botMove();
@@ -95,7 +97,8 @@ function botMove(){
         return;
     var socket = io();
     var curP = turn ? player1 : player2;
-    ambientTemp = Math.min(...curP.prevTemp);
+    var nCurP = turn ? player2 : player1;
+    ambientTemp = Math.min(...curP.prevTemp,...nCurP.prevTemp);
     allChains = [];
     for(var i = 0; i < row; i++)
         allChains = allChains.concat(graphToChain(graph[i]));
@@ -142,8 +145,8 @@ function componentToPosition(comp){
 
 function getHover(){ //returns square that is hovered by the mouse
     let x = mouseX, y = mouseY;
-    if(x >= (length*col) || y >= (length*row) || x <= 0 || y <= 0) return undefined;
-    let curCol = Math.floor(x/length), curRow = Math.floor(y/length);
+    if(x >= (wLen*col) || y >= (hLen*row) || x <= 0 || y <= 0) return undefined;
+    let curCol = Math.floor(x/wLen), curRow = Math.floor(y/hLen);
     return {curRow,curCol};
 }
 
@@ -243,9 +246,6 @@ function addEdge(node,x,y){
     node.connected.edgeCol.push(y);
 }
 
-function setScroll(x){scrollTo(x*length,0);}
-//start and end are the first and last nodes visible on the users screen
-function getScroll(){return {start: Math.ceil(scrollX/length), end: Math.floor((scrollX+window.parent.containerWidth)/length)};}
 
 /*available property has four states:
 1. all: either player can play here
@@ -259,10 +259,10 @@ function createGraph(){
     }
     player1.prevTemp = new Set();
     player2.prevTemp = new Set();
-    player1.prevTemp.add(2);
-    player2.prevTemp.add(2);
-    xpos = length/2;
-    ypos = length/2;
+    player1.prevTemp.add(3);
+    player2.prevTemp.add(3);
+    xpos = wLen/2;
+    ypos = hLen/2;
     for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
             //if not filled available describes which player can still fill it
@@ -283,10 +283,10 @@ function createGraph(){
                 addEdge(graph[i][j],i,j-1);
             if(j != col-1)
                 addEdge(graph[i][j],i,j+1);
-            xpos += length;
+            xpos += wLen;
         }
-        xpos = length/2; //begin new line
-        ypos += length;
+        xpos = wLen/2; //begin new line
+        ypos += hLen;
     }
     top.graph = graph;
 }

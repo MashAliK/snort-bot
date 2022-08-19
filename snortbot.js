@@ -100,12 +100,12 @@ function orthodoxMove(chain, player, ambientTemp){
     if(n === 3)
         return 1;
     if(start === 'R' && (end === 'L' || end === 'R'))
-        player = (player === 1) ? 0 : 1;
+        player = (player == 1) ? 0 : 1;
     var moves, optimalMove;
     if((start === 'L' && end === 'R') || (start === 'R' && end === 'L'))
-        moves = allChoices([2],3);
+        moves = allChoices([2],6);
     else if ((start === 'L' && end === 'L') || (start === 'R' && end === 'R')){
-        if(player === 1){
+        if(player == 0){
             moves = allChoices([0],1);
         }else{
             if((n % 3 === 0) || (n % 3 === 1))
@@ -115,7 +115,7 @@ function orthodoxMove(chain, player, ambientTemp){
         }
     }
     optimalMove = moves[Math.floor(Math.random() * moves.length)];
-    if(player === 1)
+    if(player == 0)
         optimalMove = n-optimalMove;
     return optimalMove-1;
 }

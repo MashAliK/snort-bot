@@ -34,7 +34,7 @@ body{
 #main-container{
     display: flex;
     flex-flow: row wrap;
-    height: 36rem;
+    height: 80%;
     align-items: center;
     margin-left: 10%;
     margin-right: 10%;
@@ -46,7 +46,8 @@ body{
 #game-frame{
     flex: 10 1 auto;
     position: relative;
-    aspect-ratio: 1 / 1;
+    max-height: 100%;
+    aspect-ratio: 1;
     overflow: hidden;
 }
 #info-container{

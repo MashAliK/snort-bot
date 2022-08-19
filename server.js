@@ -24,9 +24,7 @@ app.post('/',(req,res)=>{
 });
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
     socket.on('optimalMove', (arg,callback) =>{
-        console.log("User says: "+arg);
         callback(
             {move: optimalMove(arg[0],arg[1],arg[2],arg[3])}
         );

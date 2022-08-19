@@ -1,9 +1,6 @@
-/*
-window.tileLength = tileLength, window.updateTable = updateTable, 
-window.switchTurn = switchTurn, scrollSize = 20, window.scrollSize = scrollSize;
-*/
 const game = document.getElementById('game');
 const gameFrame = document.getElementById('game-frame');
+
 function validate(){
     numCol = parseInt(document.getElementById('colInput').value);
     if(numCol < 2 || numCol > 99)
@@ -104,7 +101,7 @@ function updateTable(history){
             tableBody.children[i].children[0].innerHTML = `${moveList[i].moveNumber}`;
             tableBody.children[i].children[1].innerHTML = ((moveList[i].player) ? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle-fill" viewBox="0 0 16 16">
             <circle cx="8" cy="8" r="8"/></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/></svg>`) + `${moveList[i].x+1}`;
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/></svg>`) + `${moveList[i].y+1},${moveList[i].x+1}`;
         }
     }
 }
@@ -115,5 +112,6 @@ function displayWinner(turn){document.getElementById("current-move").innerHTML =
 window.addEventListener('message', (e) =>{
     switchTurn(e.data.curTurn);
     updateTable(e.data.moveHistory)
+    //console.log(e.data.end);
     if(e.data.end) displayWinner(!e.data.curTurn);
 });
