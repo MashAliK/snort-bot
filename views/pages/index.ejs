@@ -1,17 +1,15 @@
 <%- include('../partials/_header.ejs') %>
-<div id="main-container">
-    <div id="initialize" class="card expandable bg-light shadow">
-        <div class="card-body">
-            <p class="display-5 mx-5 my-4">Human Vs. Human</p>
-            <form id="initialize-form" action="/" method="post">
-                <label for="colInput">Number of columns:</label>
-                <input class="number form-control mb-2" type="number"
-                 id="colInput" name="colInput" value="10" maxlength="2" min="2" max="99">
-                <input id="play-button" class="btn btn-success btn-lg" type="submit" value="Play">
-                <%# <button  type="button"  form="initialize-form" onclick="validate()">Play</button> %>
-            </form>
-        </div>
-        <div class="alert alert-warning" role="alert" id="warning" style="display:none"></div>
+<div id="initialize" class="card expandable bg-light shadow">
+    <div class="card-body">
+        <p class="display-5 mx-5 my-4 centered-text" >Human Vs. Human</p>
+        <form id="initialize-form" action="/" method="post">
+            <label for="colInput">Number of columns:</label>
+            <input class="number form-control mb-2" type="number"
+                id="colInput" name="colInput" value="10" maxlength="2" min="2" max="99">
+            <input id="play-button" class="btn btn-success btn-lg" type="submit" value="Play">
+            <%# <button  type="button"  form="initialize-form" onclick="validate()">Play</button> %>
+        </form>
     </div>
+    <div class="alert alert-warning" role="alert" id="warning" style="display:none"></div>
 </div>
 <%- include('../partials/_footer') %>
