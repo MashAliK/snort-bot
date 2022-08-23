@@ -45,9 +45,9 @@ body{
     margin-right: 10%;
 }
 #main-container > div{
-    border: 1px solid black;
     margin: 2rem;
 }
+
 #game-frame{
     flex: 10 1 auto;
     position: relative;

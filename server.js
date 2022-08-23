@@ -20,7 +20,7 @@ app.get('/',function(req,res){
 });
 
 app.post('/',(req,res)=>{
-    res.render("game",{numCol:req.body.colInput});
+    res.render("game",{numCol:req.body.sizeInput});
 });
 
 io.on('connection', (socket) => {

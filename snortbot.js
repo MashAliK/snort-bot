@@ -13,7 +13,7 @@
             player:         0 - lefts's move (black)
                             1 - right's move (white) 
             ambientTemp:    minumum board temperature of all previous
-                            moves by the player
+                            moves in the history of the game
 */
 
 const Decimal = require('decimal.js');
