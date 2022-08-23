@@ -19,8 +19,10 @@ app.get('/',function(req,res){
     res.render("index");
 });
 
-app.post('/',(req,res)=>{
-    res.render("game",{numCol:req.body.sizeInput});
+app.post('/',(req,res)=>{  
+    const formData = req.body;
+    const isChecked = i => {return i != undefined;}
+    res.render("game",{size:formData.sizeInput,botOne:isChecked(formData.botOne),botTwo:isChecked(formData.botTwo)});
 });
 
 io.on('connection', (socket) => {

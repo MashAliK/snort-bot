@@ -36,6 +36,11 @@ body{
     cursor: pointer;
     color: blue;
 }
+#bot-options{
+    display: inline-flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
 #main-container{
     display: flex;
     flex-flow: row wrap;
@@ -47,7 +52,6 @@ body{
 #main-container > div{
     margin: 2rem;
 }
-
 #game-frame{
     flex: 10 1 auto;
     position: relative;
@@ -68,6 +72,9 @@ body{
     padding: 0.5em 4em;
     max-width: 50%;
     top: 20%;
+}
+#initialize-form > div{
+    padding: 0.5rem;
 }
 #game{
     position: absolute;

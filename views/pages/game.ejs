@@ -20,7 +20,8 @@
         </div>
     </div>
     <div id="game-frame">
-            <iframe id="game" src="<%= `/pages/game.html?col=${numCol}&row=${numCol}&p1bot=false&p2bot=true` %>" scrolling="no" title="Game"></iframe>
+            <iframe id="game" src="<%=`/pages/game.html?col=${size}&row=${size}&p1bot=${botOne}&p2bot=${botTwo}`%>"
+                 scrolling="no" title="Game Board"></iframe>
     </div>
 </div>
 <script src="/pages/gamescript.js"></script>

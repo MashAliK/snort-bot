@@ -1,11 +1,21 @@
 <%- include('../partials/_header.ejs') %>
 <div id="initialize" class="card expandable bg-light shadow">
     <div class="card-body">
-        <p class="display-5 mx-5 my-4 centered-text" >Human Vs. Human</p>
+        <p class="display-5 mx-5 my-4 centered-text" >Create Local Game</p>
         <form id="initialize-form" name="boardSetup" action="/" method="post" onsubmit="return(validate())">
             <label for="sizeInput">Size of the board:</label>
             <input class="number form-control mb-2" type="number"
                 id="sizeInput" name="sizeInput" value="10" maxlength="2" min="5" max="19">
+            <div id="bot-options">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" value="" id="botOne" name="botOne">
+                    <label class="form-check-label" for="botOne">Player 1 Bot</label>
+                </div> 
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" value="" id="botTwo" checked name="botTwo">
+                    <label class="form-check-label" for="botTwo">Player 2 Bot</label>
+                </div> 
+            </div>
             <input id="play-button" class="btn btn-success btn-lg" type="submit" value="Play">
         </form>
     </div>

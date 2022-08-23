@@ -83,7 +83,6 @@ function temp(chain){
 }
 
 function orthodoxMove(chain, player, ambientTemp){
-    /* parse chain string */
     var start = chain.charAt(0);
     var n = parseInt(chain.slice(1,-1));
     var end = chain.charAt(chain.length-1);
@@ -116,8 +115,8 @@ function orthodoxMove(chain, player, ambientTemp){
     }
     optimalMove = moves[Math.floor(Math.random() * moves.length)];
     if(player == 0)
-        optimalMove = n-optimalMove;
-    return optimalMove-1;
+        optimalMove = n-optimalMove-1;
+    return optimalMove;
 }
 
 function findPlayable(game, player){

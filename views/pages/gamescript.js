@@ -1,6 +1,10 @@
 const game = document.getElementById('game');
 const gameFrame = document.getElementById('game-frame');
 
+if(window.history.replaceState ){
+    window.history.replaceState(null, null, window.location.href);
+}
+
 function updateTable(history){
     let tableBody = document.getElementById("history-table-body"), moveList = new Array(tableBody.childElementCount);
     if(history.length < tableBody.childElementCount)
