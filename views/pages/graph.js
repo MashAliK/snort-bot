@@ -1,21 +1,15 @@
-let row = window.parent.numRow, col = window.parent.numCol, hoverEnabled = true, ambientTemp = 2,
-    length = window.parent.tileLength, unFilledSize = 0.13, filledSize = 0.25, 
-    availableSize = 0.45, turn = window.parent.playerOneTurn, yStart = 50, move = window.parent.moveDisplay
-    updateTable = window.parent.updateTable, moveNum = 0, switchTurn = window.parent.switchTurn, finished = false,
-    displayWinner = window.parent.displayWinner, top.setScroll = setScroll, top.getScroll = getScroll, 
-    leftScrollOff = window.parent.leftScrollOff, rightScrollOff = window.parent.rightScrollOff;
+const unFilledSize = 0.13, filledSize = 0.25, availableSize = 0.45, yStart = 50;
+var finished = false, hoverEnabled = true, moveNum = 0;
+const params = new Proxy(new URLSearchParams(window.location.search),{
+    get: (searchParams, prop) => searchParams.get(prop),
+});
+const col = params.col, row = params.row, history = [];
+player1 = {color: 0,   bot: params.p1bot == 'true',  prevTemp: null};
+player2 = {color: 255, bot: params.p2bot == 'true',  prevTemp: null};
+var graph, turn = (Math.random()<.5), newChains = null;
+const game = {numCol:col,numRow:row,curTurn:turn,moveHistory:history,end:finished};
 
-player1 = {color: 0,   bot: false, prevTemp: null};
-player2 = {color: 255, bot: true,  prevTemp: null};
-let history = [];
-let newChains = null;
-let game = {firstMove:turn, moveHistory:history};
-let graph = new Array(row); //2d array represents graph of the game
-for(let i = 0; i < row; i++){
-    graph[i]= new Array(col);
-}
-
-function mouseMoved(){ //start/stop drawing based on mouse position
+function mouseMoved(){ //start or stop drawing based on mouse position
     let curPos = getHover();
     if(curPos == undefined)
         clearHighlight();
@@ -30,17 +24,18 @@ function playerMove(curRow, curCol){
     cur.filled = true;
     cur.color = turn ? player1.color : player2.color;
     nodeClaimed(curRow,curCol);
-    newLeftChain = graphToChain(graph[0],moveRange[0],curCol);
-    newRightChain = graphToChain(graph[0],curCol,moveRange[1]);
+    newLeftChain = graphToChain(graph[curRow],moveRange[0],curCol);
+    newRightChain = graphToChain(graph[curRow],curCol,moveRange[1]);
     newLeftChain = (newLeftChain.length === 0) ? null : newLeftChain[0];
     newRightChain = (newRightChain.length === 0) ? null : newRightChain[0];
     newChains = [newLeftChain, newRightChain];
-    history.push({moveNumber:++moveNum,player: turn, x:curCol,y:curRow});
+    history.push({moveNumber: ++moveNum, player: turn, x:curCol, y:curRow});
     turn = !turn;
     hoverEnabled = (turn) ? !player1.bot : !player2.bot;
-    switchTurn(turn);
-    updateTable(history);
-    checkWin()
+    checkWin();
+    game.curTurn = turn;
+    game.end = finished;
+    parent.postMessage(game,"*");
     document.body.style.cursor = 'default';
     botMove();
 }
@@ -102,10 +97,15 @@ function botMove(){
         return;
     var socket = io();
     var curP = turn ? player1 : player2;
-    ambientTemp = Math.min(...curP.prevTemp);
-    socket.emit('optimalMove',[graphToChain(graph[0]),newChains,turn,ambientTemp], (resp) =>{
+    var nCurP = turn ? player2 : player1;
+    ambientTemp = Math.min(...curP.prevTemp,...nCurP.prevTemp);
+    allChains = [];
+    for(var i = 0; i < row; i++)
+        allChains = allChains.concat(graphToChain(graph[i]));
+    socket.emit('optimalMove',[allChains,newChains,turn,ambientTemp], (resp) =>{
         curP.prevTemp.add(resp.move[2]);
-        playerMove(0,componentToPosition(resp.move));
+        var move = componentToPosition(resp.move);
+        playerMove(move[0],move[1]);
         redraw();
     });
     loop();
@@ -119,33 +119,34 @@ function checkWin(){ //check if a player has won
                 return;
         }
     finished = true;
-    displayWinner(!turn);
 }
 
 function componentToPosition(comp){
     var compCount = -1;
-    var inComp = false;
-    var i = -1;
-    for(const node of graph[0]){
-        i++;
-        if(inComp){
-            if(node.available === "none" || node.filled)
-                inComp = false;
-            else 
-                continue;
-        }else if(node.available != "none" && !node.filled){
-            compCount++;
-            if(compCount === comp[0])
-                return i+comp[1];
-            inComp = true;
+    for(var j = 0; j < row; j++){
+        var inComp = false;
+        var i = -1;
+        for(const node of graph[j]){
+            i++;
+            if(inComp){
+                if(node.available === "none" || node.filled)
+                    inComp = false;
+                else 
+                    continue;
+            }else if(node.available != "none" && !node.filled){
+                compCount++;
+                if(compCount === comp[0])
+                    return [j,i+comp[1]];
+                inComp = true;
+            }
         }
     }
 }
 
 function getHover(){ //returns square that is hovered by the mouse
     let x = mouseX, y = mouseY;
-    if(x>=length*col || y>=length*row+yStart || x<0 || y<yStart) return undefined;
-    let curCol = Math.floor(x/length), curRow = Math.floor((y-yStart)/length);
+    if(x >= (wLen*col) || y >= (hLen*row) || x <= 0 || y <= 0) return undefined;
+    let curCol = Math.floor(x/wLen), curRow = Math.floor(y/hLen);
     return {curRow,curCol};
 }
 
@@ -245,9 +246,6 @@ function addEdge(node,x,y){
     node.connected.edgeCol.push(y);
 }
 
-function setScroll(x){scrollTo(x*length,0);}
-//start and end are the first and last nodes visible on the users screen
-function getScroll(){return {start: Math.ceil(scrollX/length), end: Math.floor((scrollX+window.parent.containerWidth)/length)};}
 
 /*available property has four states:
 1. all: either player can play here
@@ -255,12 +253,16 @@ function getScroll(){return {start: Math.ceil(scrollX/length), end: Math.floor((
 3. none: neither player can play here
 */
 function createGraph(){
+    graph = new Array(row); //2d array represents graph of the game
+    for(let i = 0; i < row; i++){
+        graph[i]= new Array(col);
+    }
     player1.prevTemp = new Set();
     player2.prevTemp = new Set();
-    player1.prevTemp.add(2);
-    player2.prevTemp.add(2);
-    xpos = 0;
-    ypos = yStart;
+    player1.prevTemp.add(3);
+    player2.prevTemp.add(3);
+    xpos = wLen/2;
+    ypos = hLen/2;
     for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
             //if not filled available describes which player can still fill it
@@ -277,18 +279,14 @@ function createGraph(){
                 graph[i][j] = {x:xpos,y:ypos,color: 0, size: unFilledSize,
                     filled: false, available: "all", connected: {edgeRow:[],edgeCol:[]}
                     ,chainEnd: false};
-            if(i != 0)
-                addEdge(graph[i][j],i-1,j);
-            if(i != row-1)
-                addEdge(graph[i][j],i+1,j);
             if(j != 0)
                 addEdge(graph[i][j],i,j-1);
             if(j != col-1)
                 addEdge(graph[i][j],i,j+1);
-            xpos += length;
+            xpos += wLen;
         }
-        xpos=0; //begin new line
-        ypos += length;
+        xpos = wLen/2; //begin new line
+        ypos += hLen;
     }
     top.graph = graph;
 }

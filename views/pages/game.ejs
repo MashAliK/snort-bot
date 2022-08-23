@@ -1,0 +1,27 @@
+<%- include('../partials/_header.ejs') %>
+<div id="main-container">
+    <div id="info-container">
+        <div id="current-move" class="bg-light shadow centered-text"></div>
+        <div id="history" class="bg-light shadow">
+            <table class = "table table-bordered table-hover">
+                <colgroup>
+                    <col span="1" style="width:33%">
+                    <col span="1" style="width:67%">
+                </colgroup>
+                <tbody id = 'history-table-body'>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                    <tr><th></th><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="game-frame">
+            <iframe id="game" src="<%= `/pages/game.html?col=${numCol}&row=${numCol}&p1bot=false&p2bot=true` %>" scrolling="no" title="Game"></iframe>
+    </div>
+</div>
+<script src="/pages/gamescript.js"></script>
+<%- include('../partials/_footer') %>
