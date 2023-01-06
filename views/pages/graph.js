@@ -8,6 +8,7 @@ player1 = {color: 0,   bot: params.p1bot == 'true',  prevTemp: null};
 player2 = {color: 255, bot: params.p2bot == 'true',  prevTemp: null};
 var graph, turn = (Math.random()<.5), newChains = null;
 const game = {numCol:col,numRow:row,curTurn:turn,moveHistory:history,end:finished};
+parent.postMessage(game,"*");
 
 function mouseMoved(){ //start or stop drawing based on mouse position
     let curPos = getHover();

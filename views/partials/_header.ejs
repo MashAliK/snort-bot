@@ -15,11 +15,11 @@
     <body style="background-color:rgba(168, 168, 168, 0.174)">
         <nav class="navbar navbar-expand-sm bg-light shadow-sm">
             <div class="ps-5">
-                <a class="navbar-brand logo" href="#">Snort Bot</a>
+                <a class="navbar-brand logo" href="/">Snort Bot</a>
             </div>
             <ul class="navbar-nav px-3">
-                <li class="nav-item"><a class="nav-link" href="#">Play</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Guide</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Play</a></li>
+                <li class="nav-item"><button class="btn" data-bs-toggle="modal" data-bs-target="#guide">Guide</button></li>
             </ul>
             <ul class="navbar-nav ms-auto mx-5">
                 <li class="nav-item"><a class="nav-link" href="https://github.com/MashAliK/snortBot"
@@ -28,3 +28,20 @@
             </div>
         </div>
         </nav>
+        <div class="modal fade" id="guide" tabindex="-1" role="dialog" aria-labelledby="guideLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="guideLabel">How To Play Snort</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="padding:2em;">
+                        <p>Snort is a turn-based game played by two players, referred to as <kbd>Black</kbd> and <kbd>White</kbd>, where the first player who cannot make a valid move is the loser. 
+                            The game consists of a sequence of 'nodes' which are either unreserved, reserved by <kbd>Black</kbd>, or reserved by <kbd>White</kbd>. Unreserved nodes are drawn as small circles and reserved nodes are drawn as large circles corresponding to the color of the player that claimed the node.
+                            Nodes which are connected by an edge between them are called adjacent nodes. The game begins by assigning a random player as the first player. During a turn, a player can play on one of the unreserved nodes or one of their own reserved nodes by clicking on it.
+                            When a player moves at a node, that node dissapears and the adjacent nodes are reserved by that player. When two players reserve the same node it disappears. A player runs out of valid moves when there are no more unreserved nodes and no reserved nodes of their own color.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
